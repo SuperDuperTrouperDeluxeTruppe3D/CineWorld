@@ -1,0 +1,80 @@
+
+body{
+  text-align:center;
+}
+
+.img-gallery{
+  height: 50%;
+  width:50%;
+  margin-top: 10%;
+  margin-bottom: 1.5rem;
+}
+h1{
+
+}
+
+/*Gallery section*/
+#gallery{
+  background-color:  #E8ECEF;
+  padding: 7% 15%;
+  color:black;
+  margin-top: 7%;
+  text-align: center;
+}
+/*pricing section */
+
+#pricing{
+  margin:3% 15%;
+
+}
+.card-head{
+  background-color:  #E8ECEF;
+}
+.img-pricing{
+  height: 50%;
+  width:40%;
+  margin-top: 10%;
+  margin-bottom: 1.5rem;
+}
+
+/* testimonial section */
+#testimonial{
+  background-color:  #E8ECEF;
+  padding: 7% 15%;
+  margin-top: 7%;
+
+}
+
+/*footer section*/
+#footer{
+  background-color: #fff;
+  padding: 7% 15%;
+  margin-top: 7%;
+}
+.foot-resizing{
+  margin:1% 1%;
+}
+
+/* login and regesteration */
+.centered {
+    padding-top: 200px;
+    text-align: center;
+}
+
+
+.login{
+  padding: 7% 15%;
+  margin-left: 18% ;
+  text-align: center;
+}
+.inputEmail{
+  padding: 7% 15%;
+  margin-top: 7%;
+}
+.span-forgotten{
+  padding: 7%;
+}
+
+.span-remember{
+  padding: 7%;
+}

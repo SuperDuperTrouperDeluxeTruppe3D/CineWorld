@@ -1,0 +1,23 @@
+<%- include("partials/secondaryHeader") %>
+<div class="col-lg-7 col-md-6 login ">
+  <div class="card">
+    <div class="card-header card-head">
+      <h5 class="card-title">Login</h5>
+    </div>
+    <div class="card-body">
+
+      <form action="/login" method="POST">
+        <input type="email" name="username" class="form-control inputEmail" placeholder="E-mail">
+        <input type="password" name="password"  class="form-control inputEmail"  placeholder="Password">
+        <div id="remember-container">
+          <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked" />
+          <span id="remember" class="span-remember">Remember me</span> <br />
+          <span id="forgotten" class="span-forgotten">Forgotten password</span>
+        </div>
+        <button type="submit" class="btn btn-outline-dark btn-block btn-lg">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

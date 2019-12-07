@@ -1,0 +1,26 @@
+{
+  "name": "kino",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cjs": "0.0.11",
+    "core-util-is": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.13",
+    "mongoose-encryption": "^2.0.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}
+
