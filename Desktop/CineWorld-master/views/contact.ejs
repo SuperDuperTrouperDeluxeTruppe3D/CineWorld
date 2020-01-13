@@ -1,0 +1,73 @@
+<% if (loggedin) {%>
+  <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+
+<%- include("partials/goToTop") %>  
+
+<!-- Title -->
+
+<br>
+<h1>Kontakt</h1>
+<br>
+
+<!-- LEFT COLUMN -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-sm-8 col-xs-8">
+      <h2 class="text-left">Schreiben Sie uns!</h2>
+      <br>
+
+      <!-- CONTACT FORM -->
+
+      <form>
+        <div class="form-group">
+          <label class="form-text text-left">Name</label>
+          <input type="name" class="form-control id=" inputName">
+        </div>
+        <div class="form-group">
+          <label class="form-text text-left">Email</label>
+          <input type="email" class="form-control" id="inputEmail">
+          <small class="form-text text-muted text-left">Wir werden Ihre E-Mail niemals mit anderen teilen!</small>
+        </div>
+        <div class="form-group">
+          <label class="form-text text-left">Betreff</label>
+          <input type="subject" class="form-control" id="inputSubject">
+        </div>
+        <div class="form-group">
+          <label class="form-text text-left">Ihre Nachricht</label>
+          <textarea class="form-control" id="inputTextarea" rows="5"></textarea>
+        </div>
+        <div class="text-left">
+          <button type="submit" class="btn btn-secondary">Absenden</button>
+        </div>
+        <br>
+        <p> Bei der Nutzung des Kontaktformulars werden Ihre Daten gemäß unseren Datenschutzbestimmungen verarbeitet.
+        </p>
+      </form>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+
+    <div class="col-md-4 col-sm-4 col-xs-4">
+      <br>
+      <br>
+      <!-- Google Maps -->
+      <div id="map-container-google-4">
+        <iframe src="https://maps.google.com/maps?q=mannheim%20coblitzalle&t=&z=13&ie=UTF8&iwloc=&output=embed"
+          width=100% height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+        <!-- Address -->
+
+        <br>
+        <br>
+        <p class="lead text-center"> CineWorld</p>
+        <p class="text-center"> Coblitzallee 1-9</p>
+        <p class="text-center"> 68163 Mannheim</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

@@ -1,0 +1,53 @@
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %> 
+
+<aside>
+    <div id="wrapper">    
+        <div id="yourdiv"><h1>Bezahlung</h1></div>
+    </div>
+</aside>
+
+
+<div class="colorlib-shop">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-md-12 col-md-offset-1">
+                <div class="process-wrap">
+                    <div class="process text-center active">
+                        <p><span calss="icon"><i class="icon-search2"></i></span></p>
+                        <h3>Sitzplatzauswahl</h3>
+                    </div>
+                    <div class="process text-center active">
+                        <p><span calss="icon"><i class="icon-dollar-sign"></i></span></p>
+                        <h3>Bezahlung</h3>
+                    </div>
+                    <div class="process text-center active">
+                        <p><span calss="icon"><i class="icon-checkmark"></i></span></p>
+                        
+                        <h3>Fertig</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-md-offset-1 text-center" style="margin-top: 10px;">
+                <span class="icon"><i class="icon-shopping-cart"></i></span>
+                <h2>Vielen Dank für ihre Buchung! </h2>
+                <h4>Eine E-Mail mit ihren Tickets wurde an xxx wurde versandt.</h4>
+                <h4>Sie können die Tickes auch als PDF herunterladen und drucken</h4>
+                
+                    <div lass="col-md-12 col-md-offset-1 text-center">
+                    <a href="/"><button class ="checkout" style="color:black">Home</button></a> <!-- Verlinkung zum Index -->
+                    <a href="/download"><button class ="checkout" style="color:black">Ticket als PDF</button></a> <!--Verlinkung zu Downloads-->
+                    <a href="/profile"><button class ="checkout" style="color:black">Buchungen</button></a> <!-- Verlinkung zum Konto -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+<%- include("partials/footer") %>

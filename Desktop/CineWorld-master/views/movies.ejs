@@ -1,0 +1,36 @@
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %> 
+
+
+<div class="colorlib-shop" style="background-image: url(/images/bg.png);">
+    <div class="container">
+        <div class="row" id="rowId">
+            <% movies.forEach(function(item){ %>
+
+            <div class="col-lg-2 col-md-4 text-left">
+                <div class="product-entry">
+                    <a href="/films/<%= item.id %>">
+                        <img class="img-gallery" src="/images/<%= item.foto %>.jpg" alt="image 1">
+                    </a>
+
+                    <a href="/films/<%= item.id %>">
+
+                        <div class="product">
+                            <small class="genre"><%= item.genre %></small>
+                            <span class="product"><%= item.title %></span>
+                        </div>
+
+                    </a>
+
+                </div>
+            </div>
+            ';
+            <% } ); %>
+
+        </div>
+    </div>
+</div>
+
+<%- include("partials/footer") %>

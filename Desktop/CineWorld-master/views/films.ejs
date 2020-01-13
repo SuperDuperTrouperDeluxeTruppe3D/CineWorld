@@ -1,0 +1,89 @@
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %> 
+<!doctype html>
+<html lang="en">
+
+    <div class="colorlib-shop" style="background-image: url(/images/bg.png);">
+        <div class="container">
+            <div class="row" id="rowId">-->
+    
+    
+    
+    
+          <% movies.forEach(function(item){ %>
+            <div class="col-lg-2 col-md-4 text-left">
+                <div class="product-entry">
+                    <a href="/films/<%= item.title %>"><img class="img-gallery" src="<%= item.photo %>" alt="image 1"></a>
+                    <a href="/films/<%= item.title %>">
+                        <div>
+                            <small class="genre"><%= item.genre %></small>
+                            <span class="product"><%= item.title %></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <% } ); %>
+          </div>
+        </div>
+    </div>
+    
+    
+        <!--
+        <!doctype html>
+        <html lang="en">
+        <head>
+            &lt;!&ndash; Required meta tags &ndash;&gt;
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            &lt;!&ndash; Bootstrap CSS &ndash;&gt;
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            <link rel="stylesheet" type="text/css" href="css/filmCard.css">
+            &lt;!&ndash; font fontawesome&ndash;&gt;
+            <script src="https://kit.fontawesome.com/fafaa42d18.js"></script>
+            &lt;!&ndash; Optional JavaScript &ndash;&gt;
+            &lt;!&ndash; jQuery first, then Popper.js, then Bootstrap JS &ndash;&gt;
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                    crossorigin="anonymous"></script>
+            <div class="container py-5">
+                &lt;!&ndash; For Demo Purpose &ndash;&gt;
+                <header class="text-center">
+                    <h1 class="display-4 font-weight-bold">Gallery</h1>
+                    <p class="font-italic text-muted mb-0">An inspirational collection of subtle hover effects</p>
+                    <p class="font-italic">Snippet By <a href="https://bootstrapious.com" class="text-muted">
+                            <u>Bootstrapious</u></a>
+                    </p>
+                </header>
+                &lt;!&ndash; DEMO 4 &ndash;&gt;
+                <div class="py-5">
+                    <h3 class="font-weight-bold mb-0">Demo 4</h3>
+                    <p class="font-italic text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <div class="row" id="rowId">
+                        &lt;!&ndash; DEMO 4 Item&ndash;&gt;
+                        <% movies.forEach(function(item){ %>
+                        <div class="col-lg-6 mb-3 mb-lg-0">
+                            <div class="hover hover-4 text-white rounded"><img src="<%= item.photo %>" alt="">
+                                <div class="hover-overlay"></div>
+                                <div class="hover-4-content">
+                                    <h3 class="hover-4-title text-uppercase font-weight-bold mb-0"><span class="font-weight-light"><%= item.title %> </span></h3>
+                                    <p class="hover-4-description text-uppercase mb-0 small"><%= item.genre %></p>
+                                </div>
+                            </div>
+                                <% } ); %>
+                        </div>
+                    </div>-->
+    
+    
+    
+    
+    
+    <%- include("partials/footer") %>

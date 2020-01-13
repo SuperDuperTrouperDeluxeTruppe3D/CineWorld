@@ -1,0 +1,50 @@
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %>  
+
+<aside>
+    <div id="wrapper">    
+        <div id="yourdiv"><h1>Bezahlung</h1></div>
+    </div>
+</aside>
+
+
+<div class="colorlib-shop">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-md-12 col-md-offset-1">
+                <div class="process-wrap">
+                    <div class="process text-center active">
+                        <p><span calss="icon"><i class="icon-search2"></i></span></p>
+                        <h3>Sitzplatzauswahl</h3>
+                    </div>
+                    <div class="process text-center active">
+                        <p><span calss="icon">30 Min</span></p>
+                        <h3>30 Minuten vor der Vorstellung<br>Tickets an der Kinokasse abholen</h3>
+                    </div>
+                    <div class="process text-center active">
+                        <p><span calss="icon" ><i class="icon-dollar-sign"></i></span></p>
+                        <h3>Bezahlung</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-md-offset-1 text-center" style="margin-top: 10px;">
+                <span class="icon"><i class="icon-checkmark"></i></span>
+                <h2>Ihre Prätze wurden reserviert. Wir freuen uns, Sie bald im CineWorld Mannheim begrüßen zu dürfen</h2>
+                <h4>Probieren Sie doch vor dem Film unser leckeres Popcorn an der Kinotheke</h4>
+                
+                    <div class="col-md-12 col-md-offset-1 text-center">
+                    <button href="/" class ="checkout" style="color:black">Home</button> <!-- Verlinkung zum Index -->
+                    <button href="konto"class ="checkout" style="color:black">Zum Konto</button> <!-- Verlinkung zum Konto -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+<%- include("partials/footer") %>

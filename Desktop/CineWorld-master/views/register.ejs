@@ -1,0 +1,19 @@
+<%- include("partials/headerSignon") %>
+<div class="col-lg-7 col-md-6 login ">
+  <div class="card">
+    <div class="card-header card-head">
+      <h5 class="card-title">Register</h5>
+    </div>
+    <div class="card-body">
+
+      <form class="form-group" action="/register" method="POST">
+        <input type="email" name="username" class="form-control" placeholder="E-mail">
+        <br>
+        <input type="password" name="password"  class="form-control" placeholder="Password">
+        <button type="submit" class="btn btn-outline-dark btn-block btn-lg">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

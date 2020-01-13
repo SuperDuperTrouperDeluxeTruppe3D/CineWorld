@@ -1,0 +1,482 @@
+<%- include('partials/goToTop') %>
+<%- include('partials/inits')%>
+
+<html lang="en">
+ 
+
+  <title>Tickets@CinemaMax</title>
+
+</head>
+
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+
+    var chosen = [];
+    var temp;
+    var elem = [];
+    var canvas;
+    var contect;
+    var c;
+    var maxRow;
+   // var isTaken = [];
+    var total = 0;
+    
+    window.onload = looper;
+
+    function looper() {
+        first_pick();
+        init();
+        draw();
+        counter();
+        update();
+    }
+
+    function first_pick() {
+        isTaken = JSON.parse('<%-JSON.stringify(isTaken)%>');
+        console.log(isTaken);
+        do {
+            var seatR = Math.floor(Math.random() * parseInt("<%=maxSeat%>"));
+            var seatR2 = seatR+1;
+            var rowR = Math.floor(Math.random() * parseInt("<%=maxRow%>"));
+            
+            if (seatR == parseInt("<%=maxSeat%>")-1) {
+                seatR2 = seatR-1;
+            }
+            
+           // chosen = [{seat: seatR, row: rowR ,adult: true}, {seat: seatR2, row: rowR, adult:true } ];
+
+            var taken = false;
+                
+            isTaken.forEach(function (item, index) {
+                if ((rowR == isTaken[index].row && seatR == isTaken[index].seat) || 
+                        (seatR2 == isTaken[index].seat && rowR == isTaken[index].row)){
+                    taken = true;
+                }
+            });
+
+        }while(taken);
+        
+    }
+
+    function init() {
+        canvas = document.getElementById("canvas");
+        context = canvas.getContext("2d");
+        c = canvas.getContext("2d");
+
+    }
+
+    function remove(indexA) {
+        var temp;
+
+        elem.forEach(function (item, index) {
+            if (elem[index].r == chosen[indexA].row && elem[index].s == chosen[indexA].seat) {
+                temp = elem[index];
+            }
+        });
+
+        chosen.splice(indexA, 1);
+
+        c.clearRect(temp.x, temp.y, temp.w, temp.h);
+
+        if (temp.r > maxRow/2) {
+            color = "rgba(104,104,104,1)";
+        }else {
+            color = "rgba(110,131,154,0.6)";
+        }
+        c.fillStyle = color;
+        elem.push({x: temp.x, y:temp.y, w: temp.w, h: temp.h,r:temp.r,s:temp.s,t:temp.t});
+        c.fillRect(temp.x, temp.y, temp.w, temp.h);
+
+
+        update();
+    }
+
+
+    function draw() {
+        var row, seat;
+        var padding =10;
+        var lenght = 22;
+        var height = 22;
+        maxRow = parseInt("<%=maxRow%>");
+        var maxSeat = parseInt("<%=maxSeat%>");;
+        var spacerRow = 0;
+        var spacerSeat = 0;
+        var paddingSeat = 25;
+        var paddingRow = 5;
+        var Screenlenght = maxSeat*length+(maxSeat+1)*paddingSeat;
+        var Screenheight = 25;
+        context.fillStyle = "#4b4b4b";
+        context.fillRect(0,0, Screenlenght, Screenheight);
+        context.font="20px Roboto, sans-serif";
+        context.textAlign="center";
+        context.fillStyle = "cornsilk";
+        context.fillText("Leinwand", 70, 18);
+        var counter = 0;
+        
+        
+        
+
+        for (row = 0; row < maxRow; row += 1) {
+            for(seat = 0; seat < maxSeat; seat += 1) {
+                //Gänge sind durch if (0===row oder seat modulo einer zahl) einzufügen.
+                var picked = false;
+                if(chosen != null || chosen != undefined) {
+                    chosen.forEach(function (item, index) {
+                        if (row == chosen[index].row && seat == chosen[index].seat){
+                            picked = true;
+                        }
+                    });
+                }
+
+                var taken = false;
+
+
+                isTaken.forEach(function (item, index) {
+                    if (row == isTaken[index].row && seat == isTaken[index].seat){
+                        taken = true;
+                    }
+                });
+
+
+                if (picked){
+                    c.fillStyle = "rgba(0, 230, 64, 1)";
+                }
+
+                else if (taken) {
+                    c.fillStyle = "red";
+                }
+                else if (row>maxRow/2) {
+                    c.fillStyle = "rgba(104,104,104,1)";
+                }
+                else {
+                    c.fillStyle = "rgba(110,131,154,0.6)";
+                }
+                elem.push({x: 15+seat*paddingSeat,y: Screenheight+paddingRow+row*height+row*paddingRow,w: lenght,h:height, r: row, s: seat, t: taken});
+                c.fillRect(15+seat*paddingSeat, Screenheight+paddingRow+row*height+row*paddingRow, lenght, height);
+                counter++;
+
+            }
+
+        }
+
+        canvas.addEventListener('click', function(e) {
+            console.log('click: ' + e.offsetX + '/' + e.offsetY);
+            var rect = collides(elem, e.offsetX, e.offsetY);
+            if (rect != null) {
+                var onGreen = false;
+                chosen.forEach(function (item, index) {
+                    if (rect.r == chosen[index].row && rect.s == chosen[index].seat){
+                        onGreen = true;
+                    }
+                });
+                var color = "";
+                if (rect!=null && rect.t == false && !onGreen) {  //add picked seat
+
+                    chosen.push({seat: rect.s, row: rect.r, adult:true});
+                    color = "rgba(0, 230, 64, 1)";
+
+
+                }
+                else if (rect!=null && rect.t == false && onGreen) { //remove picked seat.
+                    var temp = -1;
+                    chosen.forEach(function (item, index) {
+                        if (rect.r == chosen[index].row && rect.s == chosen[index].seat) {
+                            temp = index;
+                        }
+                    });
+
+                    if (temp > -1) {
+                        chosen.splice(temp, 1);
+                    }
+                    if (rect.r >maxRow/2) {
+                        c.fillStyle = "rgba(104,104,104,1)";
+                    }else {
+                        color = "rgba(110,131,154,0.6)";
+                    }
+                }
+                else {
+                    alert("Seat: " +rect.s+" Row: " +rect.r +" is taken");
+                    color = "red";
+                }
+
+                c.clearRect(rect.x, rect.y, rect.w, rect.h);
+                c.fillStyle = color;
+                elem.push({x: rect.x, y:rect.y, w: rect.w, h: rect.h,r:rect.r,s:rect.s,t:rect.t});
+                c.fillRect(rect.x, rect.y, rect.w, rect.h);
+                update();
+            }
+
+            else {
+                //alert("not a seat");
+            }
+        }, false);
+
+        function collides(rects, x, y) {
+            var isCollision;
+            var counter2 = 0;
+            rects.forEach(function (item, index) {
+                var left = rects[index].x, right = rects[index].x+rects[index].w;
+                var top = rects[index].y, bottom = rects[index].y+rects[index].h;
+                var taken = rects[index].t;
+                if (right >= x
+                    && left <= x
+                    && bottom >= y
+                    && top <= y) {
+                    isCollision = rects[index];
+                }      });
+
+
+            return isCollision;
+
+        }
+
+    }
+</script>
+
+
+<body>
+    <div class="container-fluid" style="background-color: #4b4b4b;">
+        <div class="row align-items-center" >
+
+            <div class="col">
+                <h3 class="nav-link" style="color:cornsilk">CineWorld|Tickets</h3>
+            </div>
+
+            <div class="col">
+                <p class="nav-link"><p style="color:cornsilk">CineWorld Mannheim<br>
+                    Title:        <%=results.title%> <br>
+                    Saal:          <%=results.saal%> <br>
+                    Spielzeit:     <%=results.playingTime%></p>
+            </div>
+
+            <div class="col">
+                <span style="color:cornsilk" >verbliebene Zeit:</span><br>
+                <span style="color:cornsilk" id = time>05:00</span>
+            </div>
+
+        </div>
+    </div>
+
+            <script>
+
+
+                function counter() {
+                    var fiveMinutes = 60 * 5,
+                        display = document.querySelector('#time');
+                    startTimer(fiveMinutes, display);
+                };
+
+                function startTimer(duration, display) {
+                    var timer = duration, minutes, seconds;
+                    setInterval(function () {
+                        minutes = parseInt(timer / 60, 10);
+                        seconds = parseInt(timer % 60, 10);
+
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                        display.textContent = minutes + ":" + seconds;
+
+                        if (timer == 59) {
+                            var span = document.getElementById("time");
+                            span.style.color = "red";
+                        }
+
+                        if (--timer < 0) {
+                            alert("Bitte neue Sitze wählen"); //tauschen
+                            timer = duration;
+                        }
+                    }, 1000);
+                }
+            </script>
+
+<div style="margin-top: 20px;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <g>
+                    <svg width="90%" height="45" align="left" style="margin-bottom: 10px;">
+                        <rect width="90%" height="45" style="fill:rgb(228, 199, 37);" />
+                        <text x="20" y="35" font-family="Verdana" font-size="25" fill="black">Sitzplatzauswahl</text>
+                    </svg>
+                </g>
+                <div class="product-entry" id="canvas_screen">
+                    <canvas id="canvas" width="650" height="650"></canvas>
+
+                </div>
+            </div>
+            <div class="col">
+                <g><svg width="100%" height="45" align="left" style="margin-bottom: 10px;">
+                    <rect width="100%" height="45" style="fill:rgb(228, 199, 37);" />
+                    <text x="20" y="35" font-family="Verdana" font-size="25" fill="black">Tickets</text>
+                </svg> </g>
+            <table style="width:100%; text-align: left;" id = "test">
+                <script>
+
+                    function changedTo(index) {
+
+                        if (document.getElementById(''+index+'').value == 0) {chosen[index].adult = false;}
+
+
+                        else {chosen[index].adult = true;}
+
+                        //alert(chosen[index].adult);
+
+                        update();
+                    }
+
+                    function update() {
+                        total = 0;
+                        var wrapper = document.getElementById("test");
+
+                        var myHTML = '';
+                        chosen.forEach(function (item, index) {
+
+                            myHTML+='<tr style="border-top: 1px solid #4b4b4b; ">';
+
+                            if (chosen[index].row > maxRow/2) {
+                                myHTML += '<td><span style=font-size:17px>Loge</span></td>';
+                            }else {myHTML += '<td><span style=font-size:17px>Paket</span></td>';}
+
+                            myHTML += '<td><span style=font-size:17px>Reihe: '+(chosen[index].row+1)+' Sitz: '+(chosen[index].seat+1)+'</span></td><td>'
+
+                            if (chosen[index].adult == true) {
+                                myHTML+='<select id='+index+' onchange="changedTo(\''+index+'\')"><option value=1>Erwachsen</option><option value=0>Kind</option></select></td>';
+                            }else {myHTML+='<select id='+index+' onchange="changedTo(\''+index+'\')"><option value=0>Kind</option><option value=1>Erwachsen</option></select></td>';}
+
+
+
+                            if (chosen[index].row > maxRow/2 && chosen[index].adult == true) {
+                                myHTML+= '<td><span style=font-size:17px>15€</span></td>';
+                                total += 15;
+                            } else if (chosen[index].row > maxRow/2 && chosen[index].adult == false) {
+                                myHTML+= '<td><span style=font-size:17px>12€</span></td>';
+                                total += 12;
+                            } else if (chosen[index].row <= maxRow/2 && chosen[index].adult === true) {
+                                myHTML+='<td><span style=font-size:17px>13€</span></td>';
+                                total+=13;
+                            }
+                            else if (chosen[index].row <= maxRow/2 && chosen[index].adult == false) {
+                                myHTML+= '<td><span style=font-size:17px>10€</span></td>';
+                                total+= 10;
+                            }
+
+                            myHTML+= '<td><input type="image" src="/images/delete.jpg" width="28" height="28" onclick="remove(\'' +index +'\')" /> </td>';
+
+                            myHTML+='</tr>';
+
+                        });
+                        myHTML+='<tr><td><span></span></td></tr>';
+                        myHTML+='<tr><td><span></span></td></tr>';
+                        myHTML+='<tr style="border-top: 2.25px solid #4b4b4b; border-bottom: 0.25px solid #4b4b4b;"><td><span style=font-size:17px; text-align: left>Zwischensumme</span></td><td></td><td></td><td>'+total+'€</td></tr>';
+                        total=total+2;
+
+                        myHTML+='<tr style="border-top: 1px solid #4b4b4b;"><td><span style=font-size:17px>Vorverkauf</span></td><td></td><td></td><td>'+2+'€</td></tr>';
+                        myHTML+='<tr><td><span></span></td></tr>';
+                        myHTML+='<tr><td><span></span></td></tr>';
+                        myHTML+='<tr style="border-top: 2.25px solid ;"><td><span style=font-size:17px>Gesammtsumme</span></td><td></td><td></td><td>'+total+'€</td></tr>';
+
+                        wrapper.innerHTML = myHTML;
+                    }
+                </script>
+            </table>
+        
+            <div class="row" style="margin-top: 20px;">
+                <div class="col  mr-auto"> 
+                    <button class="checkout" onclick="f()" style="width: 80%;">
+                        <span style="color: black;">Jetzt kostenflichtig <br> buchen</span>
+                    </button>
+                </div>
+
+                <div class="col mx-auto">
+                    
+                </div>
+
+                <div class="col ml-auto">
+                    <button class="checkout col" onclick="f_cash()" style="width: 80%;">
+                        <span style="color: black;">Jetzt reservieren<br>und später zahlen</span>
+                    </button>
+
+                </div>
+
+                
+
+            </div>
+            
+
+            </div>
+        
+            </div>
+        </div>
+    </div>
+                    
+                        
+                        <script>
+                        function booking(cb) {
+                            if (chosen.length > 0 ){
+                                            var wrapper = document.getElementById("test");
+
+                                            var myHTML = '<input type="hidden" name="group_name"><div id="dynamic_form">';
+
+                                            chosen.forEach(function(item, index) {
+                                                myHTML += '<input type="hidden" name="rows[]" value="'+chosen[index].row+'">';
+
+                                                myHTML += '<input type="hidden" name="seats[]" value='+""+chosen[index].seat+'>';
+                                                myHTML += '<input type="hidden" name="adults[]" value="'+chosen[index].adult+'">';
+                                            });
+                                            myHTML += '</div>';
+
+                                            wrapper.innerHTML = myHTML;
+
+                                                    $.ajax({
+                                                        url: "http://localhost:3000/booking",
+                                                        type: "POST",
+                                                        data: {myArray : chosen, sum:total},
+                                                        success: (data) => cb(data)
+                                            });
+                                        }else {
+                                            alert("Bitte wählen Sie einen Sitzplatz");
+                                        }
+                        }
+                        </script>
+                                <div id = test>
+                                    <form id="form" method="GET" action="/payment">
+                                        <script>
+                                            function f() {
+                                                booking((data) => {
+                                                    if (data.type === "success") {
+                                                        $("#form").submit();
+                                                    } else {
+                                                        alert("Bereits reserviert")
+                                                    }
+                                                });
+                                            }
+                                        </script>
+                                    </form>
+                                </div>
+
+                                <div id="test">
+                                <form id="form2" method="GET" action="/cashReservation">
+
+                                    <script>
+                                        function f_cash (){
+                                            booking((data) => {
+                                                if (data.type === "success") {
+                                                    $("#form2").submit();
+                                                } else {
+                                                    alert("An error occured")
+                                                }
+                                            });
+
+
+                                        }
+                                    </script>
+
+                                </form>
+                            </div>
+                        
+</body>
+</html>
+<%- include('partials/footer') %>

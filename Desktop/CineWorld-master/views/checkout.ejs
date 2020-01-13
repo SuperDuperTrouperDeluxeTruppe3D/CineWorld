@@ -1,0 +1,34 @@
+
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %> 
+
+
+
+<div class="col-lg-7 col-md-6 login ">
+    <div class="card">
+        <div class="card-header card-head">
+            <h5 class="card-title">Login</h5>
+        </div>
+        <div class="card-body">
+
+            <form action="/login" id="login-form" method="post">
+                <input type="email" name="username" class="form-control inputEmail" placeholder="E-mail" id="email">
+                <input type="password" name="password" class="form-control inputEmail" placeholder="Password"  id="password">
+                <input type="password" name="password" class="form-control inputEmail" placeholder="Password"  id="password">
+                <input type="password" name="password" class="form-control inputEmail" placeholder="Password"  id="password">
+                <div id="remember-container">
+                    <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked"/>
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-outline-dark btn-block btn-lg" id="btnFetch" >Login</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

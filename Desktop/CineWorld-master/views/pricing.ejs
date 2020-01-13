@@ -1,0 +1,41 @@
+<% if (loggedin) {%>
+  <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+
+<%- include("partials/goToTop") %> 
+
+<br> </br>
+  <br> </br>
+  <div class="container border">
+    <h2>Ticketpreise</h2>       
+    <table class="table table-striped">
+       <thead>
+          <tr>
+            <th></th>
+            <th>Normal</th>
+            <th>3D</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left">Montag - Donnerstag</td>
+            <td>7,50 €</td>
+            <td>10,50 €</td>
+          </tr>
+          <tr>
+            <td class="text-left">Freitag - Sonntag</td>
+            <td>8,50 €</td>
+            <td>11,50 €</td>
+          </tr>
+          <tr>
+            <td class="text-left">Kinder bis einschl. 11 Jahre* an allen Tagen</td>
+            <td>6,00 €</td>
+            <td>9,00 € </td>
+          </tr>
+        </tbody>
+    </table>
+    <br> </br>
+    <p>Ermäßigung für Schüler/Studenten/Auszubildende von 1,50 € bei Vorlage eines gültigen Ausweises.</p>
+  </div>
+
+  
+<%- include("partials/footer") %>
