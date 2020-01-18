@@ -1,8 +1,6 @@
 //jshint esversion:6
 //'use strict';
 const _ = require("lodash");
-//const bycrpt = require("bcryptjs");
-//const jwt = require("jsonwebtoken");
 const passport = require('passport');
 //const passportLocalMongoose = require('passport-local-mongoose');
 const model = require('../models/model.js');
@@ -79,28 +77,7 @@ class User {
              }
          });
 
-       /* const user =  await model.User.findOne({email: email});
-        if (!user){
-            throw new Error("User does not Exist");
-        }
-       const isEqual = await bycrpt.compare(password, user.password);
-        if (!isEqual){
-            throw new Error("Password is not correct");
-        }
-       // process.env.JWTKEY
 
-       const token = jwt.sign(
-           { userId: user.id, email: user.email },
-           "somesupersecretkey",
-           {
-               expiresIn: '1h'
-           }
-       );
-       //return { userId: user.id, token: token, tokenExpiration: 1 };
-      return  res.cookie('access_token', token , {
-          maxAge: 3600,
-          httpOnly: true
-      });*/
    }
 
     user(userId) {

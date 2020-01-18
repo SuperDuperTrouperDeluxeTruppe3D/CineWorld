@@ -2,6 +2,7 @@ const paypal = require("paypal-rest-sdk");
 const {payment, booking, film} = require('../controllers/Controller.js');
 let chosenFilm = '';
 const model = require('../models/model');
+const Cart= require('../models/cart');
 
 
 
@@ -15,19 +16,31 @@ module.exports.routes = (app) => {
 
 
 
-    app.get("/payment", (req, res) => {
+    app.get("/cart", (req, res) => {
+        if(!req.session.cart){
+             res.render("cart",  {bookings: null });
+        }
+        const cart = new Cart(req.session.cart);
 
-        const reservedFilm =  film.getFilmId();
-        const filmModel = model.Film.findOne( {title: reservedFilm}).exec();
-        const session = model.Session.findOne({productId: filmModel._id}).exec();
-        const booking = model.Booking.findOne({productId: filmModel._id, session: session._id}).exec();
+        res.render("cart",
+           { bookings: cart.generateArray(),
+               totalPrice: cart.totalPrice  // res.status.json() works!!
+           });
 
-        res.render("payment", {
-            title: filmModel.title,
-            session: session,
-            reserved: booking.reserved
-        });
+       // payment.renderPayments(req, res);
     })
+        .get("/add-to-Cart/:id", (req, res) =>{
+           const bookingId = req.params.id;
+          const cart = new Cart(req.session.cart ? req.session.cart : {} );
+          model.Booking.findById(bookingId).then(booking =>{
+              cart.add(booking, booking._id);
+              req.session.cart = cart;
+              console.log(req.session.cart);
+              res.redirect("payment")
+          })
+              .catch(err => console.log(err) )
+
+        })
 
         .post('/payment', (req, res) => {
            chosenFilm =  film.getFilmId();

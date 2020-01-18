@@ -58,8 +58,16 @@ const transformBooking = booking =>{
     };
 }
 
+const transformSession = session =>{
+    return {
+        ...session._doc,
+        _id: session.id
+    };
+}
+
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;
+exports.transformSession = transformSession;
 
 
 /*

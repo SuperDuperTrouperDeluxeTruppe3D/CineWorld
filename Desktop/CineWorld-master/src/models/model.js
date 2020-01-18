@@ -11,6 +11,7 @@ const userSchema = new Schema({
     //,
     //required: true },
     bookedFimls: [{type: Schema.Types.ObjectID, ref: "Film"}],
+    bookings: [{type: Schema.Types.ObjectID, ref: "Booking"}],
     token: String,
     tokenExpiration: Number
 });
@@ -95,8 +96,10 @@ const releasedDateSchema = new Schema({
 
 
 const bookingSchema = new Schema({
-    film: {type: Schema.Types.ObjectID, ref: "Film"},
+    film: {type: Schema.Types.ObjectID, ref: "Film"},    // to be deleted
+    filmTitle: String,
     user: {type: Schema.Types.ObjectID, ref: "User"},
+    session: {type: Schema.Types.ObjectID, ref: "Session"},
     createdAt: Date,
     updatedAt: Date,
     date: [releasedDateSchema],
@@ -105,28 +108,27 @@ const bookingSchema = new Schema({
     saal: String,
     maxSeat: String,
     maxRow: String,
-    reserved: [{
+    reserved: [{    // to be deleted
         seat: Number,
         row: Number,
         adult: Boolean
     }],
+    numberOfSeats: Number,
     session: {type: Schema.Types.ObjectId, ref: "Session"},
+    paid: Boolean,
+
 }, {timestamp: true});
 
 const sessionSchema = new Schema({
     productId: {type: Schema.Types.ObjectId, ref: "Film"},
     hall: String,
-    //date: Date,
     date: [ { filmDate : Date} ],
-    reserved: [
-        {
-            seat: Number,
-            row: Number,
-            adult: Boolean,
-            hour: String
-        }
-    ]
-    ,
+    reserved: [{
+        seat: Number,
+        row: Number,
+        adult: Boolean,
+        booking: { type: Schema.Types.ObjectID, ref: "Booking"}
+    }],
     maxSeat: {type: Number, default: 22},
     maxRow: {type: Number, default: 22}
 });

@@ -4,8 +4,8 @@ const _ = require("lodash");
 const mongoose = require("mongoose");
 const model = require('../models/model.js');
 const {dateToString} = require('../helpers/date.js');
-const  constant  = require('../constants/preview');
-const {transformEvent} = require('./merge');
+const constant = require('../constants/preview');
+const {transformEvent, transformSession} = require('./merge');
 
 
 /**
@@ -29,27 +29,27 @@ class Film {
         }
     }
 
-      async preview(req, res) {
-       /* const preview = await  model.Film.find({title: {$in: constant.preview.movies}})*/
-          const preview = await  model.Film.find({})
+    async preview(req, res) {
+        /* const preview = await  model.Film.find({title: {$in: constant.preview.movies}})*/
+        const preview = await model.Film.find({})
             .select("  title genre photo")
             .exec();
 
-            res.render("films",
-                    {
-                        movies: preview,
-                        loggedin: req.isAuthenticated()
-                    } );
+        res.render("films",
+            {
+                movies: preview,
+                loggedin: req.isAuthenticated()
+            });
     }
 
-    async viewSortedMovies(req, res, sortedBy, numberOfMovies){
+    async viewSortedMovies(req, res, sortedBy, numberOfMovies) {
         await model.Film.find().sort(sortedBy).limit(numberOfMovies)
             .exec(function (err, posts) {
-                res.render("home", 
-                {
-                    movies: posts,
-                    loggedin: req.isAuthenticated()
-                });
+                res.render("home",
+                    {
+                        movies: posts,
+                        loggedin: req.isAuthenticated()
+                    });
             });
     }
 
@@ -78,7 +78,7 @@ class Film {
                 // date: dateToString(result._doc.date),
                  user: fc_user.bind(this, result._doc.user)
              };*/
-            const user =   await model.User.findById(req.userId);
+            const user = await model.User.findById(req.userId);
             if (!user) {
                 throw new Error("User  not found")
             }
@@ -96,62 +96,44 @@ class Film {
 
     }
 
-    getFilmId(){
+    getFilmId() {
         return Film.filmId;
     }
 
     async renderFilmInfos(req, res) {
         const requestedFilm = req.params.filmId;
-        
+
 
         try {
             const Films = await model.Film.findOne({title: requestedFilm}).exec();
             Film.filmId = requestedFilm;
-            const session = await model.Session.findOne({productId: Films.id}).exec();
-            let todaysview = '';
-            let tomorrowsview = '';
-            let aftertomorrowView;
-            for(let i=0; i < session.date.length; i++){
-                  todaysview = session.date[0].filmDate+ '';
-                  tomorrowsview = session.date[1].filmDate + '';
-                  aftertomorrowView = session.date[2].filmDate + '';
+            const sessions = await model.Session.find({productId: Films._id}).exec();
+            const transformedSession = sessions.map(session => {
+                return {
+                    ...session._doc,
+                    _id: session.id,
+                }
+            });
+
+            if (Films) {
+
+                res.status(200).render("filmItem", {
+                    // film: Films,
+                    title: Films.title,
+                    genre: Films.genre,
+                    fsk: Films.fsk,
+                    laenge: Films.laenge,
+                    crew: Films.crew,
+                    start: Films.start,
+                    spielwoche: Films.playingTime,
+                    short: Films.short,
+                    long: Films.long,
+                    foto: Films.photo,
+                    reserved: Films.reserved,
+                    sessions: sessions,
+                    loggedin: req.isAuthenticated()
+                });
             }
-            const dateArray = todaysview.split(" ");
-            const today = dateArray.slice(0, 4);
-            const formatedDate = today[0]+ '-' + today[1]+ '-'+ today[3];
-            const hour = dateArray.slice(4, 5);
-
-            const dateArrayTomorrow = tomorrowsview.split(" ");
-            const tomorrow = dateArrayTomorrow.slice(0, 4);
-            const formatedDateTomorrow = tomorrow[0]+ '-' + tomorrow[1]+ '-'+ tomorrow[3];
-            const hourTomorrow = dateArrayTomorrow.slice(4, 5);
-
-            const dateArrayAfterTomorrow = aftertomorrowView.split(" ");
-            const aftertomorrow = dateArrayAfterTomorrow.slice(0, 4);
-            const formatedDateAfterTomorrow = aftertomorrow[0]+ '-' + aftertomorrow[1]+ '-'+ aftertomorrow[3];
-            const hourAfterTomorrow = dateArrayAfterTomorrow.slice(4, 5);
-
-           if(Films){
-               res.status(200).render("filmItem", {
-                   // film: Films,
-                   title: Films.title,
-                   genre: Films.genre,
-                   fsk: Films.fsk,
-                   laenge: Films.laenge,
-                   crew: Films.crew,
-                   start: Films.start,
-                   spielwoche: Films.playingTime,
-                   short: Films.short,
-                   long: Films.long,
-                   foto: Films.photo,
-                   reserved: Films.reserved,
-                   heute: formatedDate,
-                   morgen: formatedDateTomorrow,
-                   uebermorgen:formatedDateAfterTomorrow,
-                   hour: hour,
-                   loggedin: req.isAuthenticated()
-               });
-           }
 
         } catch (err) {
             console.log("err from renderfilm", err);

@@ -1,7 +1,8 @@
-<% if (loggedin) {%>
-    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
-  
-  <%- include("partials/goToTop") %> 
+
+<% if (loggedin) { %>
+    <%-include("partials/header") %>
+    <%}else{%>  <%-include("partials/header") %> <%};%>
+<%- include("partials/goToTop") %>
 
 
 <!-- Highlight section -->
@@ -38,33 +39,7 @@
 
 </section>
 
-<!--
 
-<section id="pricing">
-
-    <div class="colorlib-shop" style="background-image: url(/images/bg.png);">
-        <div class="container">
-            <div class="row" id="rowId">
-                <% movies.forEach(function(item){ %>
-                    <div class="col-lg-2 col-md-4 text-left">
-                        <div class="product-entry">
-                            <img class="img-gallery" src="<%= item.photo %>" alt="image 1">
-                            <a href="/films/<%= item.title %>">
-                                <div>
-                                    <small class="genre"><%= item.genre %></small>
-                                    <span class="product"><%= item.title %></span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                <% } ); %>
-            </div>
-        </div>
-
-    </div>
-</section>
-
--->
 
 
 <section id="pricing">

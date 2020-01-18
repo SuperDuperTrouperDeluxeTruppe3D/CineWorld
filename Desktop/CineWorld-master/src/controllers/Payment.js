@@ -18,6 +18,25 @@ class Payment {
         });
     }
 
+
+
+
+    async renderPayments(req, res){
+
+            const username = req.user.username;
+            console.log(username);
+            let sessionArray = [];
+            let seesionsIds = [];
+            const user = await model.User.findOne({username: username}).exec();
+       // const bookings = await model.Booking.find({_id: {$in: user._doc.id}}).exec();
+        const bookings = await model.Booking.find({user: user._id, paid: false}).exec();
+
+        res.render("payment", {
+           bookings : bookings
+        } );
+
+    }
+
     async createPayment(req, res, total) {
 
         const create_payment_json = {

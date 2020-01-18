@@ -1,5 +1,6 @@
 //jshint esversion:6
 //'use strict';
+require('dotenv').config();
 const _ = require("lodash");
 const model = require('../models/model.js');
 const controller = require('./Controller.js');
@@ -44,25 +45,21 @@ class Booking {
         }
     }
 
-    async bookFilm(req, res, chosenFilm) {  // bookevent postman
+    async bookFilm(req, res, sessionId) {  // bookevent postman
 
         if (req.isAuthenticated()) {
-            console.log('not authenticated from bookfilm')
-        };
 
             const reservedSeats = req.body.myArray;
-            console.log(Booking.total);
             const username = req.user.username;
             const customer = await model.User.findOne({username: username});
             let alreadyReserved = [];
 
             try {
                 if (typeof reservedSeats !== "undefined") {
-                    const fetchFilm = await model.Film.findOne({title: chosenFilm});
-                    const session = await model.Session.findOne({productId: fetchFilm.id}).exec();
+                    const session = await model.Session.findById({_id: sessionId}).exec();
 
                     reservedSeats.forEach(seat => {
-                        const seats = session.reserved.find(bookedSeat => Number(bookedSeat.seat) === Number(seat.seat)  && Number(bookedSeat.row) === Number(seat.row));
+                        const seats = session.reserved.find(bookedSeat => Number(bookedSeat.seat) === Number(seat.seat) && Number(bookedSeat.row) === Number(seat.row));
                         if (seats) {
                             alreadyReserved = seats;
                             console.log("hier seats", seats);
@@ -70,50 +67,39 @@ class Booking {
                     });
 
                     if (alreadyReserved.length === 0) {
-                        for (let i = 0; i < reservedSeats.length; i++) {
-                            session.reserved.push(reservedSeats[i]);
-                        }
-                        //session.save();
-                        if (!customer) {
-                            console.log("User not found");
-                        }
+
+                        const film = await model.Film.findById({_id: session.productId}).exec();
                         const booking = new model.Booking({
                             user: customer._id,//username,
-                            film: fetchFilm,
+                            session: session._id,
+                            price: Booking.total,
+                            paid: false,
+                            numberOfSeats: reservedSeats.length,
+                            filmTitle: film.title
                         });
+                        await booking.save();
+                        const sessionReserved = reservedSeats.map(obj => {
+                            return {
+                                seat: obj.seat,
+                                row: obj.row,
+                                adult: obj.adult,
+                                booking: booking._id,
 
-                        const result = await booking.save();
-                        customer.bookedFimls.push(fetchFilm);
-                        customer.save();
-                        let text = fetchFilm.title + ' was booked successfully' + ' price ' + fetchFilm.price;
-
-                        await reservedSeats.forEach(seat => {
-                            if (typeof seat !== "undefined") {
-                               /* return model.Session.findOneAndUpdate({productId: fetchFilm._id}, {
-                                    $set: {
-                                        row: seat.row,
-                                        seat: seat.seat
-                                    }
-                                }).exec();*/
-                               session.seat= seat.seat
-                               session.row= seat.row
                             }
                         });
+                        for (let i = 0; i < sessionReserved.length; i++) {
+                            session.reserved.push(sessionReserved[i]);
+                        }
                         session.save();
+                        customer.bookings.push(booking);
+                        customer.save();
 
-                        await model.Booking.findOneAndUpdate({film: fetchFilm._id}, {
-                            $set: {
-                                price: Booking.total,
-                                reserved: reservedSeats,
-                                session: session._id
-                            }
-                        }).exec();
-
-                        // await this.verfiyBooking(username, "Booking-verfyied", text);
-                        //const response =  transformBooking(result);
+                        //let text = fetchFilm.title + ' was booked successfully' + ' price ' + fetchFilm.price;
+                        //await this.verfiyBooking(username, "Booking-verified", text);
                         res.json({
                             type: "success",
-                            reserved: session.reserved
+                            reserved: session.reserved,
+                            bookingId: booking._id
                         });
                     } else {
                         res.json({
@@ -126,9 +112,13 @@ class Booking {
             } catch (err) {
                 console.log(err);
             }
-     /*   } else {
-            res.render("login", {login: 'bitte melden Sie sich'});
-        }*/
+        } else {
+            console.log("from else statement")
+            res.json({
+                type: "error",
+                redirect: 'reider'
+            });
+        }
     }
 
     async cancelBooking(req, res) {
@@ -152,7 +142,6 @@ class Booking {
             //  .select("title saal spielZeit")
             .exec();
         const session = await model.Session.findOne({productId: result.id});
-          console.log(session.reserved);
         res.render("booking", {
             results: result,
             isTaken: session.reserved,
@@ -168,27 +157,27 @@ class Booking {
             port: 465,
             secure: true, // use SSL
             auth: {
-                user: 'moneeralkadeky@gmail.com',
-                pass: ''
+                user: 'test@gmail.com',
+                pass: process.env.PASSWORD
             }
         };
 
         let transporter = nodemailer.createTransport(smtpConfig);
 
-        /* let transporter = nodemailer.createTransport({
-             servcie: 'gmail',
-             auth: {
-                 user: '',
-                 pass: ''
-             }*/
-        /*});*/
+        /*    let transporter = nodemailer.createTransport({
+                servcie: 'gmail',
+                auth: {
+                    user: 'michel.meier555@gmail.com',
+                    pass: 'sam.Gnus'
+                }
+           });*/
 
         let mailOptions = {
-            from: 'moneeralkadeky@gmail.com',
+            from: 'test@gmail.com',
 
-            to: to,            //       'CineWorldWebsite@gmail.com',
-            subject: subject,//'nodemailer test',
-            text: text          //'It works'
+            to: 'test@gmail.com', //to,            //       'CineWorldWebsite@gmail.com',
+            subject: 'nodemailer test',//subject,//'nodemailer test',
+            text: 'It works'//text          //'It works'
         };
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {

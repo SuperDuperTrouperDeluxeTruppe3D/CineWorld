@@ -6,10 +6,12 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const morgan = require("morgan");
 const session = require('express-session');
+const flash = require('connect-flash');
 const passport = require('passport');
 //const passportLocalMongoose = require('passport-local-mongoose');
 const cookieParser = require('cookie-parser');
 const paypal = require("paypal-rest-sdk");
+const MongoStore = require('connect-mongo')(session);
 //const isAuth = require("./src/middleware/is-auth");
 const {User} = require('./src/models/model');
 const routes = require('./src/routes/routes');
@@ -25,6 +27,7 @@ app.use(cookieParser());
 //app.use(isAuth);
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
+
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,11 +46,19 @@ app.use((req, res, next) => {
 app.use(session({
     secret: "Our little secret.",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection}),
+    cookie: { maxAge : 180 * 60 * 100 }
 }));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use( (req, res, next) =>{
+      res.locals.login = req.isAuthenticated();
+       res.locals.session =req.session;
+       next();
+});
 
 mongoose.connect("mongodb+srv://admin-munir:test123@cluster0-onjha.mongodb.net/CineWorldDB", {
     useNewUrlParser: true,

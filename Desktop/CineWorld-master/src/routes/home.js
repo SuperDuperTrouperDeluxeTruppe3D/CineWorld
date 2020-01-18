@@ -3,7 +3,7 @@ const constant = require('../constants/constants.js');
 const mongoService = require('../controllers/MongoService');
 const mongoose = require('mongoose');
 const model = require('../models/model');
-const {film, booking} = require('../controllers/Controller');
+const {film, booking, payment} = require('../controllers/Controller');
 const nodemailer = require('nodemailer');
 const { ObjectID } = require('../helpers/objectID');
 const sortedBy = "title";
@@ -18,13 +18,12 @@ const msg = {
     subject: 'from sendgrid',
     text: 'here is the message',
     html: '<strong> html is here </strong>'
+
+        //sendgridMail.send(msg);
 }; */
 
 module.exports.routes = (app) => {
     app.get("/",(req, res) => {
-
-        //sendgridMail.send(msg);
-
           film.viewSortedMovies(req, res, sortedBy, numberOfMovies);
     });     
 }

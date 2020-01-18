@@ -35,7 +35,6 @@
 
     function first_pick() {
         isTaken = JSON.parse('<%-JSON.stringify(isTaken)%>');
-        console.log(isTaken);
         do {
             var seatR = Math.floor(Math.random() * parseInt("<%=maxSeat%>"));
             var seatR2 = seatR+1;
@@ -386,7 +385,7 @@
             <div class="row" style="margin-top: 20px;">
                 <div class="col  mr-auto"> 
                     <button class="checkout" onclick="f()" style="width: 80%;">
-                        <span style="color: black;">Jetzt kostenflichtig <br> buchen</span>
+                        <span style="color: black;">In den  Warenkorb</span>
                     </button>
                 </div>
 
@@ -440,16 +439,26 @@
                                             alert("Bitte wählen Sie einen Sitzplatz");
                                         }
                         }
+
+                    /*    here is payment */
                         </script>
                                 <div id = test>
-                                    <form id="form" method="GET" action="/payment">
+                                    <form id="form" method="GET" action="/add-to-Cart/">
                                         <script>
                                             function f() {
                                                 booking((data) => {
                                                     if (data.type === "success") {
-                                                        $("#form").submit();
+                                                        var url = "http://localhost:3000/add-to-Cart/"+data.bookingId;
+                                                        console.log(url);
+                                                            window.location.href= url;
+                                                            /*$("#form").submit();  */
+
                                                     } else {
-                                                        alert("Bereits reserviert")
+                                                        if(data.redirect === "reider") {
+                                                            window.location.href = "/login";
+                                                        } else {
+                                                            alert("Bereits reserviert")
+                                                        }
                                                     }
                                                 });
                                             }
@@ -476,6 +485,45 @@
 
                                 </form>
                             </div>
+
+
+
+
+    <div id="test">
+        <form id="form3" method="GET" action="/login">
+
+            <script>
+                function f_cash (){
+                    booking((data) => {
+                        if (data.type === "login") {
+                            $("#form3").submit();
+                        } else {
+                            alert("An error occured")
+                        }
+                    });
+
+
+                }
+            </script>
+
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         
 </body>
 </html>

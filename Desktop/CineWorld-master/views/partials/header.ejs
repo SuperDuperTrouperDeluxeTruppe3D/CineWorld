@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <%- include('inits')%>
@@ -40,11 +41,45 @@
               <a class="btn btn-outline-warning my-2 my-sm-0 btn-lg" href="/login" role="button">Login</a>
             </div>
           </li>
-
-
         </ul>
-
       </div>
+
+
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Car
+                  <%if(session.cart){%>
+                      <span class="badge"> <%- session.cart.totalQy %>  </span>
+                  <%} else{%>
+                      <span class="badge">   </span>
+                  <%};%>
+
+            </a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i> User Management <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <%  if (login) { %>
+                <li><a href="#">User Account</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/logout">Logout</a></li>
+              <%}else {%>
+                      <li><a class="btn btn-outline-warning my-2 my-sm-0 btn-lg" href="/login">SignIn</a></li>
+                      <li><a class="btn btn-outline-warning my-2 my-sm-0 btn-lg" href="/register">SignUp</a></li>
+              <%};%>
+
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+
+
+
+
+
+
     </nav>
 
   </section>

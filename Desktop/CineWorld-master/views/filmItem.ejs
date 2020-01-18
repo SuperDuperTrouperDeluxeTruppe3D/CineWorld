@@ -1,47 +1,48 @@
-<% if (loggedin) {%>
-    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
-  
-  <%- include("partials/goToTop") %>  
+<% if (loggedin) { %>
+    <%- include("partials/secondaryHeader") %> <% } else { %> <%- include("partials/header") %> <% } %>
+
+<%- include("partials/goToTop") %>
 
 <!doctype html>
 <html lang="en">
 
 <head>
-        <title><%=title%></title>
+    <title><%= title %></title>
 </head>
 
 <body>
 
 <section>
-<div class="colorlib-shop">
-    <div class="container" max>
-        <div class="row row-pb-lg">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="product-detail-wrap">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="product-entry">
-                                <img class="img-gallery-movie" src="<%=foto %>" alt="image 1">
-                                </img>
+    <div class="colorlib-shop">
+        <div class="container" max>
+            <div class="row row-pb-lg">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="product-detail-wrap">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="product-entry">
+                                    <img class="img-gallery-movie" src="<%= foto %>" alt="image 1">
+                                    </img>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-7">
-                            <div class="desc" style="margin-top: 10%; text-align: left; font-size: 15px;">
-                                <h3><%= title %></h3>
-                                <p><%= genre %></p>
-                                <p><b>FSK <%= fsk %> // Filmstart: <%= start %> // Laufzeit: <%= laenge %> Min. //
-                                        Spielwoche <%= spielwoche %></b></p>
-                                <p><b>Cast&Crew:</b><br><%= crew %></p>
+                            <div class="col-md-7">
+                                <div class="desc" style="margin-top: 10%; text-align: left; font-size: 15px;">
+                                    <h3><%= title %></h3>
+                                    <p><%= genre %></p>
+                                    <p><b>FSK <%= fsk %> // Filmstart: <%= start %> // Laufzeit: <%= laenge %> Min. //
+                                            Spielwoche <%= spielwoche %></b></p>
+                                    <p><b>Cast&Crew:</b><br><%= crew %></p>
 
-                                <b>Filmhandlung:</b><br>
-                                <p><i><%= short %></i><br/>
-                                    <%= long %></p>
-                                <div class="desc">
+                                    <b>Filmhandlung:</b><br>
+                                    <p><i><%= short %></i><br/>
+                                        <%= long %></p>
+                                    <div class="desc">
 
-                                    <div class="row row-pb-sm">
+                                        <div class="row row-pb-sm">
+                                        </div>
+
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -50,35 +51,61 @@
             </div>
         </div>
     </div>
-</div>
 </section>
 <section style=" background-image: url(/images/bg.png);">
     <div id="carouselExampleControls" class="carousel slide" data-ride="false">
         <span style="font-size: 25px; color: cornsilk;"><b>Tickets jetzt buchen</b></span>
         <table style="width:100%" id="test">
+            <!--
+
+                    <script>
+                        var wrapper = document.getElementById("test");
+
+                        var myHTML = '<tr><th><span style=color:cornsilk>< heute></span></th><th><span style=color:cornsilk>< morgen></span></th><th><span style=color:cornsilk><uebermorgen ></span></th></tr>';
+
+                        for (var i = 0; i < 4; i++) {
+                            myHTML += '<tr>';
+                            for (var j = 0; j < 3; j++) {
+                                myHTML += '<td><a class=link_booking href="/booking"><span id=roundcorners style=font-size:25px color:black><hour></span></td></a>';
+                            }
+                            myHTML += '</tr>';
+                        }
+
+                        wrapper.innerHTML = myHTML;
+
+                    </script>-->
 
 
-        <script>
-            var wrapper = document.getElementById("test");
+            <script>
+                console.log("hello from film")
 
-            var myHTML = '<tr><th><span style=color:cornsilk><%= heute%></span></th><th><span style=color:cornsilk><%= morgen %></span></th><th><span style=color:cornsilk><%= uebermorgen %></span></th></tr>';
+                var wrapper = document.getElementById("test");
+                var myHtml = "";
+                var sessionArray = JSON.parse('<%-JSON.stringify(sessions)%>');
+                for (var i = 0; i < sessionArray.length; i++) {
 
-            for (var i = 0; i < 4; i++) {
-                myHTML += '<tr>';
-                for (var j = 0; j < 3; j++) {
-                    myHTML += '<td><a class=link_booking href="/booking"><span id=roundcorners style=font-size:25px color:black><%= hour %></span></td></a>';
+                    const date = sessionArray[i].date[0].filmDate + '';
+                    console.log(date);
+                    const dateArray = date.split("T");
+
+                    const today = dateArray[0];
+                    //const formatedDate = today[2] + '-' + today[1] + '-' + today[3];
+                    const hour = dateArray[1].slice(0, 5);
+                    myHTML = '<tr><th><span style=color:cornsilk> '+today+'</span></th></tr>';
+                    myHTML += '<td><a class=link_booking href="/booking/'+sessionArray[0]._id+' "><span id=roundcorners style=font-size:25px color:black>'+hour+' </span></td></a>';
+
+                    myHTML += '</tr>';
                 }
-                myHTML += '</tr>';
-            }
 
-            wrapper.innerHTML = myHTML;
+                wrapper.innerHTML = myHTML;
 
-        </script>
-    </table>
+            </script>
+
+
+        </table>
     </div>
 
 </section>
-
 
 
 <%- include("partials/footer") %>
