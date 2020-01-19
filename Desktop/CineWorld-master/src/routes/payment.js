@@ -36,7 +36,7 @@ module.exports.routes = (app) => {
               cart.add(booking, booking._id);
               req.session.cart = cart;
               console.log(req.session.cart);
-              res.redirect("payment")
+              res.redirect("cart")
           })
               .catch(err => console.log(err) )
 

@@ -1,13 +1,12 @@
 <%- include("partials/goToTop") %>
-<%- include('partials/inits')%>
+<%- include('partials/inits') %>
 
 <html lang="en">
 
- 
 
 <head>
-    
-  <title>Bezahlung</title>
+
+    <title>Bezahlung</title>
 
 </head>
 
@@ -22,13 +21,13 @@
 
             </div>
             <div class="col-xs-2 col-md-2 col-lg-2" style="display: table-cell; margin-right: 10%">
-                <span style="color:cornsilk" >verbliebene Zeit:</span><br>
-                <span style="color:cornsilk" id = time>05:00</span> <!--Von Backend-->
+                <span style="color:cornsilk">verbliebene Zeit:</span><br>
+                <span style="color:cornsilk" id=time>05:00</span> <!--Von Backend-->
 
                 <script>
 
                     function counter() {
-                        var fiveMinutes = 60 * 5, 
+                        var fiveMinutes = 60 * 5,
                             display = document.querySelector('#time');
                         startTimer(fiveMinutes, display);
                     };
@@ -64,7 +63,7 @@
 </div>
 
 <aside>
-    <div id="wrapper">    
+    <div id="wrapper">
         <div id="yourdiv"><h1>Bezahlung</h1></div>
     </div>
 </aside>
@@ -75,44 +74,42 @@
 
         <div class="row row-pb-md">
             <div class="col-md-11 col-md-offset-1">
-                
 
 
                 <!--<div class="col-md-7">-->
-                        <div class="cart-detail" style="width: 100%; text-align: left!important;" >
+                <div class="cart-detail" style="width: 100%; text-align: left!important;">
 
-                            <h2>Gewählte Plätze</h2>
-                                <ul id = "Test">
+                    <h2>Gewählte Plätze</h2>
+                    <ul id="Test">
 
-                                    <script> //Preise ändern
-                                        test = //[{s: 5, r: 6, adult: true, price: 10}, {s: 8, r: 11, adult: false, price: 12}]; //Vom Backend
-                                        price = [{loge: 12, packet: 10}, {loge: 10, packet: 8}]; //vom Backend
-                                        maxRow = 20; //vom Backend
-                                        var wrapper = document.getElementById("Test");
+                        <script> //Preise ändern
+                            test = //[{s: 5, r: 6, adult: true, price: 10}, {s: 8, r: 11, adult: false, price: 12}]; //Vom Backend
+                                price = [{loge: 12, packet: 10}, {loge: 10, packet: 8}]; //vom Backend
+                            maxRow = 20; //vom Backend
+                            var wrapper = document.getElementById("Test");
 
-                                        var myHTML = '';
-                                        var total = 0;
+                            var myHTML = '';
+                            var total = 0;
 
-                                       /* test.forEach(function(item, index) {
-                                        if (maxRow/2 > (test[index].r+1) && test[index].adult == true){
-                                            myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Paket Erwachsen</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>15€</span>  <!-- preis pro Posten --></li>";
-                                        }else if (maxRow/2 > (test[index].r+1) && test[index].adult == false){
-                                            myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Paket Kind</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>10€</span>  <!-- preis pro Posten --></li>";
-                                        }else if (maxRow/2 <= (test[index].r+1) && test[index].adult == false){
-                                            myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Loge Kind</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>10€</span>  <!-- preis pro Posten --></li>";
-                                        }else if(maxRow/2 <= (test[index].r+1) && test[index].adult == true) {myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Loge Erwachsen</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>15€</span>  <!-- preis pro Posten --></li>";
-                                        }
-                                        total += test[index].price;
-                                    })*/
+                            /* test.forEach(function(item, index) {
+                             if (maxRow/2 > (test[index].r+1) && test[index].adult == true){
+                                 myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Paket Erwachsen</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>15€</span>  <!-- preis pro Posten --></li>";
+                             }else if (maxRow/2 > (test[index].r+1) && test[index].adult == false){
+                                 myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Paket Kind</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>10€</span>  <!-- preis pro Posten --></li>";
+                             }else if (maxRow/2 <= (test[index].r+1) && test[index].adult == false){
+                                 myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Loge Kind</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>10€</span>  <!-- preis pro Posten --></li>";
+                             }else if(maxRow/2 <= (test[index].r+1) && test[index].adult == true) {myHTML += "<li><span> Sitz: "+(test[index].s+1)+ " Reihe: " +(test[index].r+1) +" Loge Erwachsen</span>  <!-- Reihe Sitzplatz Loge/Paket  --><span>15€</span>  <!-- preis pro Posten --></li>";
+                             }
+                             total += test[index].price;
+                         })*/
 
-                                        myHTML += "<li><span><b>Gesamtpreis:<b></span> <span> 17 €</span></li>";
-                                        wrapper.innerHTML = myHTML;
-                                    
-                                    </script>
+                            myHTML += "<li><span><b>Gesamtpreis:<b></span> <span> 17 €</span></li>";
+                            wrapper.innerHTML = myHTML;
+
+                        </script>
 
 
-
-                                    <!--  <% bookings.forEach(function(booking){ %>
+                        <!--  <% bookings.forEach(function(booking){ %>
                                           <p style="color:cornsilk">CineWorld Mannheim<br>
                                               Title":      <%= booking.filmTitle %>   <br> &lt;!&ndash;Von Backend&ndash;&gt;
                                               Number Of Seats:    <%= booking.numberOfSeats %>       <br> &lt;!&ndash;Von Backend&ndash;&gt;
@@ -121,98 +118,21 @@
                                       <% } ); %>-->
 
 
-
-
-                                </ul>
-                        </div>
-
-                <%  if (bookings) { %>
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <% bookings.forEach(function(booking){ %>
-                                    <span class="badge"><% this.qty%></span>
-                                    <strong><% booking%></strong>
-                                    <span class="label label-success"><% this.price%></span>
-                                    <div class="btn-group">
-                                        <button class="btn btn-primary btn-xs dropdown-toggle" type="button">Action<span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#"> Reduce by 1</a></li>
-                                            <li><a href="#"> Remove All</a></li>
-                                        </ul>
-                                    </div>
-                            </li>
-                        </ul>
-                        <% } ); %>
-                    </div>
+                    </ul>
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
-                        <strong>Total: <%=totalPrice%> </strong>
-                    </div>
-                </div>
-                <hr>
-
-             <!--   <div class="row">
-                    <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
-                        <button type="button" class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3" >Checkout</button>
-                    </div>
-                </div>
--->
-
-                <%}else {%>
-
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
-                            <h2>No Items in Cart</h2>
-                        </div>
-                    </div>
-
-                <%};%>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 <div class="row" style="float: right; margin-right: 2.5%;">
-							<form method="POST" action="/payment">
-								<input  type="submit" value="Mit PayPal Bezahlen" name="bsubmit" class ="checkout" style="color:black"><!-- ohne Produkte im Warenkorb kein Einkauf -->
-							</form>
-                        </div>
-                    </div>
+                    <form method="POST" action="/payment">
+                        <input type="submit" value="Mit PayPal Bezahlen" name="bsubmit" class="checkout"
+                               style="color:black"><!-- ohne Produkte im Warenkorb kein Einkauf -->
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
 </div>
 
 
-
-
-
-<%- include("partials/footer") %> 
+<%- include("partials/footer") %>
 
