@@ -43,8 +43,8 @@ class Payment {
 
                 "intent": "sale",
                 "redirect_urls": {
-                    "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel"
+                    "return_url": "http://supertrouper3d.herokuapp.com/success",
+                    "cancel_url": "http://supertrouper3d.herokuapp.com/cancel"
                 },
                 "payer": {
                     "payment_method": "paypal"

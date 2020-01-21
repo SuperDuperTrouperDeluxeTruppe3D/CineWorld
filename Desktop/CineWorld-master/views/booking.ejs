@@ -430,7 +430,7 @@
                                             wrapper.innerHTML = myHTML;
 
                                                     $.ajax({
-                                                        url: "http://localhost:3000/booking",
+                                                        url: "http://supertrouper3d.herokuapp.com/booking",
                                                         type: "POST",
                                                         data: {myArray : chosen, sum:total},
                                                         success: (data) => cb(data)
@@ -448,7 +448,7 @@
                                             function f() {
                                                 booking((data) => {
                                                     if (data.type === "success") {
-                                                        var url = "http://localhost:3000/add-to-Cart/"+data.bookingId;
+                                                        var url = "http://supertrouper3d.herokuapp.com/add-to-Cart/"+data.bookingId;
                                                         console.log(url);
                                                            window.location.href= url;
                                                            // $("#form").submit();
