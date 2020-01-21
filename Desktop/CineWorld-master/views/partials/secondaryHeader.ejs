@@ -37,6 +37,17 @@
         </ul>
         </ul>
         <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Car
+            <%if(session.cart){%>
+                <span class="badge"> <%- session.cart.totalQy %>  </span>
+            <%} else{%>
+                <span class="badge">   </span>
+            <%};%>
+          </a></li>
+
+
           <li class="nav-item">
             <div class="">
               <a class="btn btn-dark btn-lg" href="/logout" role="button">Logout</a>

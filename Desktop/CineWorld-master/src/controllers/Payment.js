@@ -106,7 +106,7 @@ class Payment {
                 throw error;
             } else {
                 console.log(JSON.stringify(payment));
-                res.render("check", {loggedin: true});
+                res.render("check", {loggedin: req.isAuthenticated()});
             }
         });
 

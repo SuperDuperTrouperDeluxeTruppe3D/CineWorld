@@ -1,7 +1,7 @@
 
 <% if (loggedin) { %>
-    <%-include("partials/header") %>
-    <%}else{%>  <%-include("partials/header") %> <%};%>
+    <%- include("partials/secondaryHeader") %> <% } else { %> <%- include("partials/header") %> <% } %>
+
 <%- include("partials/goToTop") %>
 
 
@@ -53,7 +53,8 @@
                 <div class="card">
                   <a href="/films/<%= item.title %>">
                     <div class="card-header bg-secondary">
-                        <h5 class="card-title text-white"><%= item.title %> <br/> <%= item.genre %></h5>
+                        <h5 class="card-title text-white"><%= item.title %></h5>
+                        <p class="card-text text-white"><%= item.genre %></p>
                       </a>
                     </div>
                     <div class="card-body bg-secondary">

@@ -1,29 +1,20 @@
 <%- include("partials/headerSignon") %>
 
 
-<div class="col-lg-7 col-md-6 login ">
-    <div class="card">
-        <div class="card-header card-head">
-            <h5 class="card-title"><%= login %></h5>
-        </div>
-        <div class="card-body">
+<div class="contact-wrap" style="width:60%;margin-right:auto;margin-left:auto;">
+	<h1 class="text-light"><%= login %></h1>
+		<br>
+		<form method="post">
+			<input class="form-control inputEmail" name="username" placeholder="E-mail" type="email" id="email" /><br> <!-- Eingabe Benutzername -->
+			<input class="form-control inputEmail" name="password" placeholder="Passwort" type="password" id="password" /><br> <!-- Eingabe Passwort -->
+			<br>
+			<input name="cookie" type="checkbox" value="ja"/> Angemeldet bleiben&#063;<br/><br> 
+			<input class="btn btn-primary" id="log" type="submit" name="xsubmit" value="Anmelden" /><br><br> <!-- Anmelden: submit button -->
+            <a href="/register">Registrierung</a>
+            <br>
+            <a href="../login/forgot/">Passwort vergessen?</a>
 
-           <form action="/login" id="login-form" method="post">
-                <input type="email" name="username" class="form-control inputEmail" placeholder="E-mail" id="email">
-                <input type="password" name="password" class="form-control inputEmail" placeholder="Password"  id="password">
-                <div id="remember-container">
-                    <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked"/>
-                    <span id="remember" class="span-remember">Remember me</span> <br/>
-                    <span id="forgotten" class="span-forgotten">Forgotten password</span>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-outline-dark btn-block btn-lg" id="btnFetch" >Login</button>
-                    <a class="btn btn-outline-dark btn-block btn-lg" href="/logout" role="button">Log Out</a>
-        </div>
-            </form>
-
-    </div>
-  </div>
+		</form>
 </div>
 
 

@@ -1,19 +1,32 @@
 <%- include("partials/headerSignon") %>
-<div class="col-lg-7 col-md-6 login ">
-  <div class="card">
-    <div class="card-header card-head">
-      <h5 class="card-title">Register</h5>
-    </div>
-    <div class="card-body">
-
-      <form class="form-group" action="/register" method="POST">
-        <input type="email" name="username" class="form-control" placeholder="E-mail">
-        <br>
-        <input type="password" name="password"  class="form-control" placeholder="Password">
-        <button type="submit" class="btn btn-outline-dark btn-block btn-lg">Register</button>
-      </form>
-    </div>
+<div class="contact-wrap" style="width:60%;margin-right:auto;margin-left:auto;">
+  <h1 class="text-light">Registrierung</h1>
+  <form class="form-group" action="/register" method="POST">
+  
+    <!-- Eingabefelder -->
+    <input class="form-control" name="name" type="text" placeholder="Benutzername" /> 
+      <input class="form-control" name="vorname" type="text" placeholder="Vorname" />
+      <input class="form-control" name="nachname" type="text" placeholder="Nachname" />
+      <input class="form-control" name="username" type="email" placeholder="E-Mail Adresse" /> 
+      
+      <input class="form-control" name="plz" type="text" placeholder="Postleitzahl" />
+      <input class="form-control" name="ort" type="text" placeholder="Wohnort" />
+      <input class="form-control" name="strasse" type="text" placeholder="Strasse" />
+      <input class="form-control" name="hausnr" type="text" placeholder="Hausnummer" />
+      <input class="form-control" name="konto" type="text" placeholder="IBAN" />
+      <input class="form-control" name="institut" type="text" placeholder="Institut" />
+      
+    <input class="form-control" name="password" type="password" placeholder="Passwort" /> 
+      <input class="form-control" name="pass2" type="password" placeholder="Passwort wiederholen" /> 
+      <br>
+    <input class="btn btn-primary" name="submit" type="submit" value="Registrieren" /><br><br> <!-- submitbutton -->
+      
+      <a href="../login" >Schon registriert?</a> <!-- Verlinkung: zum Login zurück -->
+  </form>
+  
+  
   </div>
-</div>
+
+
 
 <%- include("partials/footer") %>

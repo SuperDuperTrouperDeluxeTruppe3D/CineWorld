@@ -28,7 +28,8 @@ module.exports.routes = (app) => {
             res.render("cart",
                 {
                     bookings: cart.generateArray(),
-                    totalPrice: cart.totalPrice
+                    totalPrice: cart.totalPrice,
+                    loggedin: req.isAuthenticated()
                 });
         })
             .catch(err => console.log(err))
@@ -36,15 +37,16 @@ module.exports.routes = (app) => {
 
         .get("/cart", (req, res) => {
             if (!req.session.cart) {
-                res.render("cart", {bookings: null});
+                res.render("cart", {bookings: null,  loggedin: req.isAuthenticated()});
             }
             const cart = new Cart(req.session.cart);
-            title = cart.item.filmTitle;
-            bookingIdentifier = cart.item._id;
+            //title = cart.item.filmTitle;
+            //bookingIdentifier = cart.item._id;
             res.render("cart",
                 {
                     bookings: cart.generateArray(),
-                    totalPrice: cart.totalPrice  // res.status.json() works!!
+                    totalPrice: cart.totalPrice,
+                    loggedin: req.isAuthenticated()  // res.status.json() works!!
                 });
 
             // payment.renderPayments(req, res);
@@ -61,7 +63,8 @@ module.exports.routes = (app) => {
              total = cart.totalPrice;
 
             payment.createPayment(req, res, total);
-
+            req.session.destroy();
+        
         })
         .get("/success", (req, res) => {
             console.log("onSuccess");

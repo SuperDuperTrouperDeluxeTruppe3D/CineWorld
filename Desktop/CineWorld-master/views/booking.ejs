@@ -472,12 +472,20 @@
                                     <script>
                                         function f_cash (){
                                             booking((data) => {
-                                                if (data.type === "success") {
-                                                    $("#form2").submit();
-                                                } else {
-                                                    alert("An error occured")
-                                                }
-                                            });
+                                                    if (data.type === "success") {
+                                                        //var url = "http://localhost:3000/add-to-Cart/"+data.bookingId;
+                                                        //console.log(url);
+                                                           //window.location.href= url;
+                                                           $("#form2").submit();
+
+                                                    } else {
+                                                        if(data.redirect === "reider") {
+                                                            window.location.href = "/login";
+                                                        } else {
+                                                            alert("Bereits reserviert")
+                                                        }
+                                                    }
+                                                });
 
 
                                         }
@@ -485,46 +493,7 @@
 
                                 </form>
                             </div>
-
-
-
-
-    <div id="test">
-        <form id="form3" method="GET" action="/login">
-
-            <script>
-                function f_cash (){
-                    booking((data) => {
-                        if (data.type === "login") {
-                            $("#form3").submit();
-                        } else {
-                            alert("An error occured")
-                        }
-                    });
-
-
-                }
-            </script>
-
-        </form>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        
+    </div>                        
 </body>
 </html>
 <%- include('partials/footer') %>

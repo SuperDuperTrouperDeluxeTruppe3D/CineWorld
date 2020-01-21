@@ -1,8 +1,11 @@
 
-<%-include("partials/header") %>
+<% if (loggedin) {%>
+    <%-include("partials/secondaryHeader") %> <%} else {%> <%-include("partials/header") %> <%} %>
+  
+  <%- include("partials/goToTop") %>  
 <%  if (bookings) { %>
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
+    <div class="row" style="margin-top: 25px;">
+        <div class="mx-auto">
             <ul class="list-group">
                 <% bookings.forEach(function(booking){ %>
                 <li class="list-group-item">
@@ -10,10 +13,10 @@
                 <strong><%= booking.item.filmTitle%></strong>
                 <span class="label label-success">€ <%= booking.price%></span>
                 <div class="btn-group">
-                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Action<span class="caret"></span></button>
+                    <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Action<span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#"> Reduce by 1</a></li>
-                        <li><a href="#"> Remove All</a></li>
+                        <li><a href="#"> Einen Sitz entfernen</a></li>
+                        <li><a href="#"> Entferne Buchung</a></li>
                     </ul>
                 </div>
                 </li>
@@ -25,19 +28,12 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
+        <div class="mx-auto">
             <strong>Total: € <%=totalPrice%> </strong>
         </div>
     </div>
+
     <hr>
-
-    <div class="row">
-        <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
-            <button type="button" class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3" >Checkout</button>
-        </div>
-    </div>
-
-
 
     <div class="row" style="float: right; margin-right: 2.5%;">
         <form method="POST" action="/payment">
@@ -50,15 +46,11 @@
 <%}else {%>
 
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
-            <h2>No Items in Cart</h2>
+        <div class="mx-auto">
+            <h2>Keine Filme gewählt</h2>
         </div>
     </div>
 
 <%};%>
 
 <%-include("partials/footer") %>
-
-
-
-
