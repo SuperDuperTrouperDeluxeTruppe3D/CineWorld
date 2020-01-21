@@ -175,9 +175,9 @@ class Booking {
         let mailOptions = {
             from: 'test@gmail.com',
 
-            to: 'test@gmail.com', //to,            //       'CineWorldWebsite@gmail.com',
-            subject: 'nodemailer test',//subject,//'nodemailer test',
-            text: 'It works'//text          //'It works'
+            to: 'test@gmail.com',
+            subject: 'nodemailer test',
+            text: 'It works'
         };
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {

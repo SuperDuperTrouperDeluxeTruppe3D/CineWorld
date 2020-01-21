@@ -21,6 +21,7 @@ module.exports.routes = (app) => {
         })
         .get("/logout", (req, res) => {
             req.logout();
+            req.session.destroy();
             res.redirect("/");
         })
         .get('/signup', (req, res) => {

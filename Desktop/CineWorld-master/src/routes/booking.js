@@ -23,18 +23,7 @@ module.exports.routes = (app) => {
         .delete("/booking", (req, res) => {
             booking.cancelBooking(req, res);
         })
-      /*  .get('/add-to-cart/:id', (req, res) =>{
-            const productId = req.params.id;
-            const cart = new Cart(req.session.cart ? req.session.cart : {items: {}});
-            model.Booking.findById(productId, (err, product)=>{
-                if(err){
-                    console.log(err);
-                }
-                cart.add(product, product.id);
-                req.session.cart = cart;
-                res.redirct('/');
-            })
-        })*/
+
 
 
 };

@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
             <ul class="list-group">
-                <li class="list-group-item">
                 <% bookings.forEach(function(booking){ %>
+                <li class="list-group-item">
                 <span class="badge"><%= booking.qty%></span>
                 <strong><%= booking.item.filmTitle%></strong>
                 <span class="label label-success">€ <%= booking.price%></span>
@@ -17,8 +17,10 @@
                     </ul>
                 </div>
                 </li>
+                    <% } ); %>
             </ul>
-            <% } ); %>
+            </br>
+
         </div>
     </div>
 
@@ -33,6 +35,15 @@
         <div class="col-sm-6 col-md-6 col-md-offset.3 col-sm-offset">
             <button type="button" class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3" >Checkout</button>
         </div>
+    </div>
+
+
+
+    <div class="row" style="float: right; margin-right: 2.5%;">
+        <form method="POST" action="/payment">
+            <input type="submit" value="Mit PayPal Bezahlen" name="bsubmit" class="checkout"
+                   style="color:black"><!-- ohne Produkte im Warenkorb kein Einkauf -->
+        </form>
     </div>
 
 

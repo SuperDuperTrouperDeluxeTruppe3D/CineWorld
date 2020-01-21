@@ -79,7 +79,6 @@ class Payment {
 
         async excutePayment(req, res, total, chosenFilm) {
         const payerId = req.query.PayerID;
-        console.log(payerId);
         const paymentId = req.query.paymentId;
 
         console.log("exute payment",chosenFilm);
