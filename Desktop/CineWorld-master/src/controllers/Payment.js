@@ -38,16 +38,6 @@ class Payment {
             .catch(err => console.log(err))
     }
 
-    reduce(req, res) {
-
-        var productId = req.params.id;
-        console.log(productId);
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        this.cart.reduceByOne(productId);
-        req.session.cart = cart;
-        res.redirect("/login");
-    }
-
     remove(req, res){
         var productId = req.params.id;
         console.log(productId);

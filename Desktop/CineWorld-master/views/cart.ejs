@@ -12,11 +12,7 @@
                 <strong><%= booking.item.filmTitle%></strong>
                 <span class="label label-success">€ <%= booking.price%></span>
                 <div class="btn-group">
-                    <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Action<span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="/reduce/<%= booking.item._id%>"> Einen Sitz entfernen</a></li>
-                        <li><a href="/remove/<%= booking.item._id%>"> Entferne Buchung</a></li>
-                    </ul>
+                    <a href="/remove/<%= booking.item._id%>"><button class="btn btn-warning btn-xs dropdown-toggle" type="button"><span class="caret">Entferne Buchung</span></button></a>
                 </div>
                 </li>
                     <% } ); %>
