@@ -39,6 +39,16 @@ class Payment {
     }
 
     reduce(req, res) {
+        var productId = req.params.id;
+        console.log(productId);
+        const cart = new Cart(req.session.cart ? req.session.cart : {});
+        cart.reduceByOne(productId);
+        req.session.cart = cart;
+        if (cart.generateArray.length === 0) {
+            res.redirect("/")
+        }else {
+        res.redirect("/cart");
+        }
     }
 
     async renderPayments(req, res){
@@ -46,11 +56,12 @@ class Payment {
         if (!req.session.cart) {
             res.render("cart", {bookings: null});
         }
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        cart = await new Cart(req.session.cart ? req.session.cart : {});
+        const cartArray = await cart.generateArray();
         res.render("cart",
             {
-                bookings: this.cart.generateArray(),
-                totalPrice: this.cart.totalPrice// res.status.json() works!!
+                bookings: cartArray,
+                totalPrice: cart.totalPrice // res.status.json() works!!
             });
     }
 

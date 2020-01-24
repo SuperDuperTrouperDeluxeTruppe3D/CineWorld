@@ -24,19 +24,7 @@ module.exports.routes = (app) => {
     })
 
     .get("/reduce/:id", (req, res)=>{
-        var productId = req.params.id;
-        console.log(productId);
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        this.cart.reduceByOne(productId);
-        req.session.cart = cart;
-        if (this.cart.generateArray.length === 0) {
-            res.redirect("/")
-        }else {
-        res.redirect("/cart");
-        }
-        
-        
-        //payment.reduce(req, res);
+        payment.reduce(req, res);
     })
 
     
