@@ -77,7 +77,7 @@ class Payment {
     async initalizePayment(req, res){
 
         if (!req.session.cart) {
-            res.render("cart", {bookings: null, loggedin: req.isAuthenticated()});
+            res.render("cart", {bookings: null});
         }
 
         total = this.cart.totalPrice;
