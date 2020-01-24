@@ -2,6 +2,9 @@ const paypal = require("paypal-rest-sdk");
 const { booking, film } = require('./Controller');
 const model= require('../models/model');
 
+let total = "";
+let cart = " "
+
 
 class Payment {
 
@@ -143,7 +146,7 @@ class Payment {
                 }
             }]
         };
-        
+
           /*  const order = await model.CartOrder({
                 user: req.user,
                 paymentId: paymentId,
