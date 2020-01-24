@@ -1,9 +1,10 @@
 const paypal = require("paypal-rest-sdk");
 const { booking, film } = require('./Controller');
 const model= require('../models/model');
+const Cart = require('../models/cart');
 
 let total = "";
-let cart = " "
+let cart = "";
 
 
 class Payment {
@@ -30,6 +31,7 @@ class Payment {
             req.session.cart = this.cart;
             res.render("cart",
                 {
+                    loggedin: req.isAuthenticated(),
                     bookings: this.cart.generateArray(),
                     totalPrice: this.cart.totalPrice
                 });
@@ -62,11 +64,12 @@ class Payment {
     async renderPayments(req, res){
 
         if (!req.session.cart) {
-            res.render("cart", {bookings: null});
+            res.render("cart", {bookings: null, loggedin: req.isAuthenticated()});
         }
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         res.render("cart",
             {
+                loggedin: req.isAuthenticated(),
                 bookings: this.cart.generateArray(),
                 totalPrice: this.cart.totalPrice  // res.status.json() works!!
             });
