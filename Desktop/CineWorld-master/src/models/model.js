@@ -10,20 +10,11 @@ const userSchema = new Schema({
     password: {type: String},
     //,
     //required: true },
-    bookedFimls: [{type: Schema.Types.ObjectID, ref: "Film"}],
     bookings: [{type: Schema.Types.ObjectID, ref: "Booking"}],
-    token: String,
-    tokenExpiration: Number
+
 });
 userSchema.plugin(passportLocalMongoose);
 
-
-const reservationSchema = new Schema({
-    seat: Number,
-    row: Number,
-    adult: Boolean
-
-});
 //film schema
 const filmSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectID,
@@ -58,14 +49,9 @@ const filmSchema = new Schema({
         row: Number,
         adult: Boolean
     }]
-    //  { type:  [reservationSchema ] , default: undefined}
 });
 
-const previewSchema = new Schema({
-    title: String,
-    genre: String,
-    photo: String
-});
+
 
 const ratingSchema = new Schema({
     author: String,
@@ -132,13 +118,19 @@ const sessionSchema = new Schema({
     maxSeat: {type: Number, default: 22},
     maxRow: {type: Number, default: 22}
 });
+const cartSchema = new Schema({
+    user: {type: Schema.Types.ObjectID, ref: "User"},
+    cart: {type: Object, required: true},
+    paymentId: {type: String, required: true},
+    address: {type: String}
+})
 
 
 exports.User = mongoose.model("User", userSchema);
 exports.Film = mongoose.model("Film", filmSchema);
-exports.Preview = mongoose.model("Preview", previewSchema);
 exports.Rating = mongoose.model("Rating", ratingSchema);
 exports.Booking = mongoose.model("Booking", bookingSchema);
 exports.Session = mongoose.model("Session", sessionSchema);
 exports.Order = mongoose.model("Order", orderSchema);
 exports.Order_list = mongoose.model("Order_list", order_listSchema);
+exports.CartOrder = mongoose.model("CartOrder", cartSchema);

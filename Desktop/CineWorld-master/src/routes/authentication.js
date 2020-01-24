@@ -40,7 +40,8 @@ module.exports.routes = (app) => {
         })
 
         .post("/register", (req, res) => {
-            controller.user.createUser(req, res)
+               controller.user.createUser(req, res);
+
         })
 };
 

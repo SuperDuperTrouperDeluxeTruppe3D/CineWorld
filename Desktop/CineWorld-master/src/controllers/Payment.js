@@ -1,6 +1,9 @@
 const paypal = require("paypal-rest-sdk");
 const { booking, film } = require('./Controller');
-const model= require('../models/model')
+const model= require('../models/model');
+const Cart = require('../models/cart');
+let total = "";
+let cart = " "
 
 
 class Payment {
@@ -19,22 +22,64 @@ class Payment {
     }
 
 
+    addToCart(req, res){
 
+        const bookingId = req.params.id;
+        this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        model.Booking.findById(bookingId).then(booking => {
+            this.cart.add(booking, bookingId);
+            req.session.cart = this.cart;
+            res.render("cart",
+                {
+                    bookings: this.cart.generateArray(),
+                    totalPrice: this.cart.totalPrice
+                });
+        })
+            .catch(err => console.log(err))
+    }
+
+    reduce(req, res) {
+
+        var productId = req.params.id;
+        console.log(productId);
+        this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        this.cart.reduceByOne(productId);
+        req.session.cart = cart;
+        res.redirect("/cart");
+    }
+
+    remove(req, res){
+        var productId = req.params.id;
+        console.log(productId);
+        this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        this.cart.removeItem(productId);
+        req.session.cart = cart;
+        res.redirect("/cart");
+    }
 
     async renderPayments(req, res){
+        if (!req.session.cart) {
+            res.render("cart", {bookings: null});
+        }
+        this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        res.render("cart",
+            {
+                bookings: this.cart.generateArray(),
+                totalPrice: this.cart.totalPrice  // res.status.json() works!!
+            });
+    }
 
-            const username = req.user.username;
-            console.log(username);
-            let sessionArray = [];
-            let seesionsIds = [];
-            const user = await model.User.findOne({username: username}).exec();
-       // const bookings = await model.Booking.find({_id: {$in: user._doc.id}}).exec();
-        const bookings = await model.Booking.find({user: user._id, paid: false}).exec();
 
-        res.render("payment", {
-           bookings : bookings
-        } );
+    async initalizePayment(req, res){
 
+        if (!req.session.cart) {
+            res.render("cart", {bookings: null});
+        }
+
+        total = this.cart.totalPrice;
+
+       await this.createPayment(req, res, total);
+        req.session.destroy();
     }
 
     async createPayment(req, res, total) {
@@ -77,11 +122,9 @@ class Payment {
     }
 
 
-        async excutePayment(req, res, total, chosenFilm) {
+        async excutePayment(req, res, chosenFilm) {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
-
-        console.log("exute payment",chosenFilm);
         const bookedFilm = await model.Film.find({title: chosenFilm}).exec();
          await model.Booking.findOneAndUpdate({title: bookedFilm._id}, {
             $set: {
@@ -89,7 +132,7 @@ class Payment {
                 price: total
             }
         }).exec();
-
+     console.log(total );
         const execute_payment_json = {
             "payer_id": payerId,
             "transactions": [{
@@ -100,6 +143,11 @@ class Payment {
             }]
         };
 
+          /*  const order = await model.CartOrder({
+                user: req.user,
+                paymentId: paymentId,
+                cart: this.cart
+            }). save();*/
         await   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
                 console.log(error.response);

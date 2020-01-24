@@ -19,44 +19,25 @@ const booking = new Booking();
 
 class User {
 
-     createUser(req, res) { // postman
+    async createUser(req, res) { // postman
         const email = req.body.username;
         const password = req.body.password;
 
-        model.User.register({username: email},  password, (err, user)=>{
-            if (err){
-                console.log(err);
-                res.render("register");
-            } else {
-                passport.authenticate("local")(req, res,()=>{
-                  res.redirect("/");
-                })
-            }
-        })
+      try{
+          await model.User.register({username: email},  password, (err, user)=>{
+              if (err){
+                  res.render("register");
+              } else {
+                  passport.authenticate("local")(req, res,()=>{
+                      res.redirect("/");
+                  });
+              }
+          });
 
-        /*try {
-            const existingUser = await model.User.findOne({email: email});
-            if (existingUser) {
-                throw new Error("User exists already.");
-            }
-            const hashedPassword = await bycrpt.hash(password, 12);
-            const user = new model.User({
-                email: email,
-                password: hashedPassword
-            });
+      }catch(err){
+          console.log(err);
+      }
 
-            const result = await user.save();
-            /!*res.status(200).json({
-                email: result.email,
-                _id: result.id,
-                password: null
-            });*!/
-            res.status(200).render("home");
-            return {...result._doc, password: null, _id: result.id}; // return null, when console.log
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }*/
     }
 
 

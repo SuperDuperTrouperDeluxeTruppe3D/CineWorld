@@ -50,6 +50,7 @@ class Booking {
         if (req.isAuthenticated()) {
 
             const reservedSeats = req.body.myArray;
+            console.log(reservedSeats);
             const username = req.user.username;
             const customer = await model.User.findOne({username: username});
             let alreadyReserved = [];
