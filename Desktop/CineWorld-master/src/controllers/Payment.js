@@ -62,14 +62,17 @@ class Payment {
 
 
     async renderPayments(req, res){
+        
+
 
         if (!req.session.cart) {
             res.render("cart", {bookings: null, loggedin: req.isAuthenticated()});
         }
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
+        var logged = req.isAuthenticated();
         res.render("cart",
             {
-                loggedin: req.isAuthenticated(),
+                loggedin: logged,
                 bookings: this.cart.generateArray(),
                 totalPrice: this.cart.totalPrice  // res.status.json() works!!
             });
@@ -78,7 +81,7 @@ class Payment {
     async initalizePayment(req, res){
 
         if (!req.session.cart) {
-            res.render("cart", {bookings: null});
+            res.render("cart", {bookings: null, loggedin: req.isAuthenticated()});
         }
 
         total = this.cart.totalPrice;
