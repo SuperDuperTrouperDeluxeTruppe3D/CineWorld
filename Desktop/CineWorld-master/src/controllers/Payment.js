@@ -61,15 +61,15 @@ class Payment {
 
 
     async renderPayments(req, res){
-        
-        if (!req.session.cart) {
+        console.log(req.session.cart);
+        if (!req.session.cart || req.session.cart == null) {
             res.render("cart", {bookings: null});
         }
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         res.render("cart",
             {
-                bookings: this.cart.generateArray(),
-                totalPrice: this.cart.totalPrice  // res.status.json() works!!
+                bookings: this.cart.generateArray() || null,
+                totalPrice: this.cart.totalPrice  || null// res.status.json() works!!
             });
     }
 
