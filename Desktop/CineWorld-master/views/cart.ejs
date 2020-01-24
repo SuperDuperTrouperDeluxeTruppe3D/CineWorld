@@ -12,7 +12,7 @@
                 <strong><%= booking.item.filmTitle%></strong>
                 <span class="label label-success">€ <%= booking.price%></span>
                 <div class="btn-group">
-                    <a href="/remove/<%= booking.item._id%>"><button class="btn btn-warning btn-xs" type="button">Entferne Buchung</button></a>
+                    <a href="/reduce/<%= booking.item._id%>"><button class="btn btn-warning btn-xs" type="button">Entferne Buchung</button></a>
                 </div>
                 </li>
                     <% } ); %>
