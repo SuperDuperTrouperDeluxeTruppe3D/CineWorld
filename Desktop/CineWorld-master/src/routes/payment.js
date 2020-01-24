@@ -23,11 +23,11 @@ module.exports.routes = (app) => {
         payment.addToCart(req, res);
     })
 
-    .get("/reduce/:id", (req, res)=>{
+    .post("/reduce/:id", (req, res)=>{
         payment.reduce(req, res);
     })
 
-    .get("/remove/:id", (req, res)=>{
+    .post("/remove/:id", (req, res)=>{
         payment.remove(req, res);
     })
 

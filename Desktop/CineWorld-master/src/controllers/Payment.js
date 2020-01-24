@@ -44,7 +44,7 @@ class Payment {
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         this.cart.removeItem(productId);
         req.session.cart = cart;
-        res.redirect("/");
+        res.redirect("/cart");
     }
 
 
