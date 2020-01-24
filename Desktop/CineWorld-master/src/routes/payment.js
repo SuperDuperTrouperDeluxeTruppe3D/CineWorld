@@ -20,56 +20,34 @@ module.exports.routes = (app) => {
 
 
     app.get("/add-to-Cart/:id", (req, res) => {
-        const bookingId = req.params.id;
-        const cart = new Cart(req.session.cart ? req.session.cart : {});
-        model.Booking.findById(bookingId).then(booking => {
-            cart.add(booking, bookingId);
-            req.session.cart = cart;
-            res.render("cart",
-                {
-                    bookings: cart.generateArray(),
-                    totalPrice: cart.totalPrice,
-                    loggedin: req.isAuthenticated()
-                });
-        })
-            .catch(err => console.log(err))
+        payment.addToCart(req, res);
     })
 
-        .get("/cart", (req, res) => {
-            if (!req.session.cart) {
-                res.render("cart", {bookings: null,  loggedin: req.isAuthenticated()});
-            }
-            const cart = new Cart(req.session.cart);
-            //title = cart.item.filmTitle;
-            //bookingIdentifier = cart.item._id;
-            res.render("cart",
-                {
-                    bookings: cart.generateArray(),
-                    totalPrice: cart.totalPrice,
-                    loggedin: req.isAuthenticated()  // res.status.json() works!!
-                });
+    .get("/reduce/:id", (req, res)=>{
+        payment.reduce(req, res);
+        })
 
-            // payment.renderPayments(req, res);
+        .get("/remove/:id", (req, res)=>{
+            payment.remove(req, res);
+
+        })
+
+        .get("/cart", (req, res) => {
+            payment.renderPayments(req, res)
         })
 
         .post('/payment', (req, res) => {
-            /*chosenFilm = film.getFilmId();
-            const total = booking.getTotal();*/
+            console.log("pament route")
+           payment.initalizePayment(req, res);
 
-            if (!req.session.cart) {
-                res.render("cart", {bookings: null});
-            }
-            const cart = new Cart(req.session.cart);
-             total = cart.totalPrice;
-
-            payment.createPayment(req, res, total);
-            req.session.destroy();
-        
         })
-        .get("/success", (req, res) => {
-            console.log("onSuccess");
+        
 
-            payment.excutePayment(req, res, total, chosenFilm);
+
+        .get("/success", (req, res) => {
+            console.log("sucess route")
+            chosenFilm = film.getFilmId();
+            payment.excutePayment(req, res,chosenFilm );
         })
         .get('/qrcode', (req, res, next) => {
 
@@ -102,7 +80,20 @@ module.exports.routes = (app) => {
 
         .get("/checkout", (req, res) => {
             res.render("checkout")
-
         })
+
+        .get("/profile", (req, res)=>{
+            model.CartOrder.find({ user: req.user}, (err, orders)=>{
+                var cart;
+                orders.forEach(function (order) {
+                    cart = new Cart(order.cart);
+                    cart.generateArray();
+                });
+                res.status(200).json(orders);
+   
+            })
+           });
+
+
 
 };
