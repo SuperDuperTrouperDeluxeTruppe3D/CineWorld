@@ -69,10 +69,9 @@ class Payment {
             res.render("cart", {bookings: null, loggedin: req.isAuthenticated()});
         }
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        var logged = req.isAuthenticated();
         res.render("cart",
             {
-                loggedin: logged,
+                loggedin: true,
                 bookings: this.cart.generateArray(),
                 totalPrice: this.cart.totalPrice  // res.status.json() works!!
             });

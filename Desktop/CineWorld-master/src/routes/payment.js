@@ -25,19 +25,17 @@ module.exports.routes = (app) => {
 
     .get("/reduce/:id", (req, res)=>{
         payment.reduce(req, res);
-        })
+    })
 
-        .get("/remove/:id", (req, res)=>{
-            payment.remove(req, res);
+    .get("/remove/:id", (req, res)=>{
+        payment.remove(req, res);
+    })
 
-        })
-
-        .get("/cart", (req, res) => {
-            payment.renderPayments(req, res)
-        })
+    .get("/cart", (req, res) => {
+        payment.renderPayments(req, res)
+    })
 
         .post('/payment', (req, res) => {
-            console.log("pament route")
            payment.initalizePayment(req, res);
 
         })
