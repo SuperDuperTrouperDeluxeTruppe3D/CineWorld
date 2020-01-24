@@ -44,7 +44,7 @@
                 seatR2 = seatR-1;
             }
             
-           // chosen = [{seat: seatR, row: rowR ,adult: true}, {seat: seatR2, row: rowR, adult:true } ];
+            chosen = [{seat: seatR, row: rowR ,adult: true}, {seat: seatR2, row: rowR, adult:true } ];
 
             var taken = false;
                 
@@ -119,7 +119,7 @@
 
         for (row = 0; row < maxRow; row += 1) {
             for(seat = 0; seat < maxSeat; seat += 1) {
-                //Gänge sind durch if (0===row oder seat modulo einer zahl) einzufügen.
+               
                 var picked = false;
                 if(chosen != null || chosen != undefined) {
                     chosen.forEach(function (item, index) {
@@ -362,7 +362,7 @@
                                 total+= 10;
                             }
 
-                            myHTML+= '<td><input type="image" src="..src/images/delete.jpg" width="28" height="28" onclick="remove(\'' +index +'\')" /> </td>';
+                            myHTML+= '<td><input type="image" src="src/images/delete.jpg" width="28" height="28" onclick="remove(\'' +index +'\')" /> </td>';
 
                             myHTML+='</tr>';
 
@@ -484,8 +484,6 @@
                                                         }
                                                     }
                                                 });
-
-
                                         }
                                     </script>
 
