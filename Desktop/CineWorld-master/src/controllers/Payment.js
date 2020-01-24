@@ -31,7 +31,6 @@ class Payment {
             req.session.cart = this.cart;
             res.render("cart",
                 {
-                    loggedin: req.isAuthenticated(),
                     bookings: this.cart.generateArray(),
                     totalPrice: this.cart.totalPrice
                 });
