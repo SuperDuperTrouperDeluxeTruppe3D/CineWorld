@@ -38,13 +38,11 @@
         </ul>
         <ul class="navbar-nav ml-auto">
 
+          <%if(session.cart && session.cart.totalQy > 0){%>
+
           <li class="nav-item">
-            <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Car
-            <%if(session.cart){%>
+            <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Warenkorb
                 <span class="badge"> <%- session.cart.totalQy %>  </span>
-            <%} else{%>
-                <span class="badge">   </span>
-            <%};%>
           </a></li>
 
 
