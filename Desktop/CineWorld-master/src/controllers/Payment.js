@@ -45,7 +45,7 @@ class Payment {
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         this.cart.reduceByOne(productId);
         req.session.cart = cart;
-        res.redirect("/cart");
+        res.redirect("/login");
     }
 
     remove(req, res){
@@ -54,7 +54,7 @@ class Payment {
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         this.cart.removeItem(productId);
         req.session.cart = cart;
-        res.redirect("/cart");
+        res.redirect("/");
     }
 
 
@@ -62,14 +62,14 @@ class Payment {
 
     async renderPayments(req, res){
         console.log(req.session.cart);
-        if (!req.session.cart || req.session.cart == null) {
+        if (!req.session.cart) {
             res.render("cart", {bookings: null});
         }
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         res.render("cart",
             {
-                bookings: this.cart.generateArray() || null,
-                totalPrice: this.cart.totalPrice  || null// res.status.json() works!!
+                bookings: this.cart.generateArray(),
+                totalPrice: this.cart.totalPrice// res.status.json() works!!
             });
     }
 
