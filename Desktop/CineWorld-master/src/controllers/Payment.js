@@ -45,7 +45,7 @@ class Payment {
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
         this.cart.reduceByOne(productId);
         req.session.cart = cart;
-        res.redirect("/login");
+        res.redirect("/cart");
     }
 
     remove(req, res){
