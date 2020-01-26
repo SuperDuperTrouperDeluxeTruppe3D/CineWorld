@@ -1,6 +1,6 @@
 const paypal = require("paypal-rest-sdk");
-const { booking, film } = require('./Controller');
-const model= require('../models/model');
+const {booking, film} = require('./Controller');
+const model = require('../models/model');
 const Cart = require('../models/cart');
 let total = "";
 let cart = " "
@@ -22,7 +22,7 @@ class Payment {
     }
 
 
-    addToCart(req, res){
+    addToCart(req, res) {
 
         const bookingId = req.params.id;
         this.cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -41,36 +41,57 @@ class Payment {
     reduce(req, res) {
 
         var productId = req.params.id;
-        console.log(productId);
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        this.cart.reduceByOne(productId);
+        const cart = new Cart(req.session.cart ? req.session.cart : {});
+        cart.reduceByOne(productId);
         req.session.cart = cart;
         res.redirect("/cart");
     }
 
-    remove(req, res){
+    cancelTickt(bookingId) {
+        model.Booking.findById(bookingId)
+            .then(results => {
+                if (results) {
+                    model.Session.findByIdAndUpdate(
+                        results.session , { $pull: { "reserved": { booking: bookingId} } },
+                        { safe: true, upsert: true },
+                        function(err, node) {
+                            if (err) {
+                                console.log(err)
+                            }else{
+                                console.log(node);
+                            }
+                        });
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    remove(req, res) {
         var productId = req.params.id;
         console.log(productId);
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        this.cart.removeItem(productId);
+        const cart = new Cart(req.session.cart ? req.session.cart : {});
+        cart.removeItem(productId);
         req.session.cart = cart;
         res.redirect("/cart");
     }
 
-    async renderPayments(req, res){
+    async renderPayments(req, res) {
         if (!req.session.cart) {
             res.render("cart", {bookings: null});
+        } else {
+            const cart = await new Cart(req.session.cart ? req.session.cart : {});
+            const cartArray = await cart.generateArray();
+            res.render("cart",
+                {
+                    bookings: cartArray,
+                    totalPrice: cart.totalPrice
+                });
         }
-        this.cart = new Cart(req.session.cart ? req.session.cart : {});
-        res.render("cart",
-            {
-                bookings: this.cart.generateArray(),
-                totalPrice: this.cart.totalPrice  // res.status.json() works!!
-            });
+
     }
 
 
-    async initalizePayment(req, res){
+    async initalizePayment(req, res) {
 
         if (!req.session.cart) {
             res.render("cart", {bookings: null});
@@ -78,7 +99,7 @@ class Payment {
 
         total = this.cart.totalPrice;
 
-       await this.createPayment(req, res, total);
+        await this.createPayment(req, res, total);
         req.session.destroy();
     }
 
@@ -86,26 +107,26 @@ class Payment {
 
         const create_payment_json = {
 
-                "intent": "sale",
-                "redirect_urls": {
-                    "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel"
-                },
-                "payer": {
-                    "payment_method": "paypal"
-                },
-                "transactions": [
-                    {
-                        "amount": {
-                            "total":total,
-                            "currency": "EUR"
-                        },
-                        "description": "This is the payment transaction description.",
+            "intent": "sale",
+            "redirect_urls": {
+                "return_url": "http://localhost:3000/success",
+                "cancel_url": "http://localhost:3000/cancel"
+            },
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "transactions": [
+                {
+                    "amount": {
+                        "total": total,
+                        "currency": "EUR"
                     },
-                ]
+                    "description": "This is the payment transaction description.",
+                },
+            ]
 
-            };
-        paypal.payment.create(create_payment_json, function(error, payment) {
+        };
+        paypal.payment.create(create_payment_json, function (error, payment) {
             if (error) {
                 console.log(" the error from here");
                 throw error;
@@ -122,17 +143,17 @@ class Payment {
     }
 
 
-        async excutePayment(req, res, chosenFilm) {
+    async excutePayment(req, res, chosenFilm) {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
         const bookedFilm = await model.Film.find({title: chosenFilm}).exec();
-         await model.Booking.findOneAndUpdate({title: bookedFilm._id}, {
+        await model.Booking.findOneAndUpdate({title: bookedFilm._id}, {
             $set: {
                 paymentId: paymentId,
                 price: total
             }
         }).exec();
-     console.log(total );
+        console.log(total);
         const execute_payment_json = {
             "payer_id": payerId,
             "transactions": [{
@@ -143,12 +164,12 @@ class Payment {
             }]
         };
 
-          /*  const order = await model.CartOrder({
-                user: req.user,
-                paymentId: paymentId,
-                cart: this.cart
-            }). save();*/
-        await   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        /*  const order = await model.CartOrder({
+              user: req.user,
+              paymentId: paymentId,
+              cart: this.cart
+          }). save();*/
+        await paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
                 console.log(error.response);
                 throw error;

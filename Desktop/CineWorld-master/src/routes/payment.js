@@ -23,20 +23,32 @@ module.exports.routes = (app) => {
         payment.addToCart(req, res);
     })
         .get("/reduce/:id", (req, res)=>{
-          payment.reduce(req, res);
+            const bookingId = req.params.id;
+            payment.cancelTickt(bookingId);
+            payment.reduce(req, res);
+
+
 
         })
         .get("/remove/:id", (req, res)=>{
-            payment.remove(req, res);
+           var productId = req.params.id;
+            console.log(productId);
+            const cart = new Cart(req.session.cart ? req.session.cart : {});
+            cart.removeItem(productId);
+            req.session.cart = cart;
+            res.redirect("/cart");
+
+
+            //payment.remove(req, res);
 
         })
 
         .get("/cart", (req, res) => {
-         payment.renderPayments(req, res)
+
+           payment.renderPayments(req, res)
         })
 
         .post('/payment', (req, res) => {
-            console.log("pament route")
            payment.initalizePayment(req, res);
 
         })
