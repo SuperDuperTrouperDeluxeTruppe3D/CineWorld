@@ -164,18 +164,10 @@ class Booking {
 
         let transporter = nodemailer.createTransport(smtpConfig);
 
-        /*    let transporter = nodemailer.createTransport({
-                servcie: 'gmail',
-                auth: {
-                    user: 'michel.meier555@gmail.com',
-                    pass: 'sam.Gnus'
-                }
-           });*/
-
         let mailOptions = {
             from: 'test@gmail.com',
 
-            to: 'test@gmail.com',
+            to: 'test@gmail.com',  //req.user.email
             subject: 'nodemailer test',
             text: 'It works'
         };

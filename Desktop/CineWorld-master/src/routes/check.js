@@ -5,14 +5,6 @@ module.exports.routes = (app) => {
         res.render("check", {
             loggedin: req.isAuthenticated(),
         })
-
-        var nodemailer = require('gmail-send')({
-            user: 'michel.meier555@gmail.com',
-            pass: 'sam.Gnus',
-            to: 'he.riedel@gmx.net',
-            subject: 'test',
-            text: 'test-text'
-        })
     
 });    
 

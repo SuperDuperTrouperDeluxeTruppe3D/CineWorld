@@ -1,6 +1,6 @@
 const paypal = require("paypal-rest-sdk");
-const { booking, film } = require('./Controller');
-const model= require('../models/model');
+const {booking, film} = require('./Controller');
+const model = require('../models/model');
 const Cart = require('../models/cart');
 
 let total = "";
@@ -40,29 +40,48 @@ class Payment {
 
     reduce(req, res) {
         var productId = req.params.id;
-        console.log(productId);
         const cart = new Cart(req.session.cart ? req.session.cart : {});
         cart.reduceByOne(productId);
         req.session.cart = cart;
-        if (cart.generateArray.length === 0) {
+        if (cart.generateArray.length == 0) {
             res.redirect("/")
         }else {
         res.redirect("/cart");
         }
     }
 
+    cancelTickt(bookingId) {
+        model.Booking.findById(bookingId)
+            .then(results => {
+                if (results) {
+                    model.Session.findByIdAndUpdate(
+                        results.session , { $pull: { "reserved": { booking: bookingId} } },
+                        { safe: true, upsert: true },
+                        function(err, node) {
+                            if (err) {
+                                console.log(err)
+                            }else{
+                                console.log(node);
+                            }
+                        });
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
     async renderPayments(req, res){
         console.log(req.session.cart);
         if (!req.session.cart) {
             res.render("cart", {bookings: null});
+        }else {
+            const cart = await new Cart(req.session.cart ? req.session.cart : {});
+            const cartArray = await cart.generateArray();
+            res.render("cart",
+                {
+                    bookings: cartArray,
+                    totalPrice: cart.totalPrice
+                });
         }
-        cart = await new Cart(req.session.cart ? req.session.cart : {});
-        const cartArray = await cart.generateArray();
-        res.render("cart",
-            {
-                bookings: cartArray,
-                totalPrice: cart.totalPrice // res.status.json() works!!
-            });
     }
 
     async initalizePayment(req, res){
@@ -117,7 +136,7 @@ class Payment {
     }
 
 
-        async excutePayment(req, res, chosenFilm) {
+    async excutePayment(req, res, chosenFilm) {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
 
@@ -146,7 +165,7 @@ class Payment {
                 cart: this.cart
             }). save();*/
 
-        await   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        await paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
                 console.log(error.response);
                 throw error;

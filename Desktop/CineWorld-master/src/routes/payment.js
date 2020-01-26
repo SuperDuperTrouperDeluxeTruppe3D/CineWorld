@@ -24,6 +24,8 @@ module.exports.routes = (app) => {
     })
 
     .get("/reduce/:id", (req, res)=>{
+        const bookingId = req.params.id;
+        payment.cancelTickt(bookingId);
         payment.reduce(req, res);
     })
 

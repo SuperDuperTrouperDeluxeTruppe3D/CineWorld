@@ -15,9 +15,8 @@ const booking = new Booking();
  * user regeseration and login
  * works
  */
-
 class User {
-
+    
     async createUser(req, res) { // postman
         const email = req.body.username;
         const password = req.body.password;
@@ -36,6 +35,10 @@ class User {
         }catch(err){
             console.log(err);
         }
+    }
+
+    createUser(req, res) {
+        return "test";
     }
 
 
